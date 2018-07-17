@@ -18,6 +18,6 @@ class UserSerializer (serializers.Serializer):
         for re in res:
             pswli =  re.user_pass
         if pswli == psw:
-            return True
+            return [True,re.user_tipe]
         else:
-            return False
+            return [False,'nothing']

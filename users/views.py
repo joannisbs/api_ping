@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import hashlib
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -12,9 +13,20 @@ def Userlogin(request):
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
         instance = serializer.Desmonta(request.data)
-    
-        res = serializer.Authentic(instance.user,instance.word)
-        print res
+        psw= hashlib.md5()
+        psw.update(instance.word)
+        psw = str(psw.hexdigest())
+        res = serializer.Authentic(instance.user,psw)
+        
+        if (res[0]==True):
+            token = hashlib.sha256()
+            token.update(psw)
+            token = str(token.hexdigest())
+            return Response('Token:'+ token + ',tipe:' + res[1])
+        else:
+            pass
+
+
 """
     List all code snippets, or create a new snippet.
     
