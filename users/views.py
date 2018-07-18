@@ -19,10 +19,10 @@ def Userlogin(request):
         res = serializer.Authentic(instance.user,psw)
         
         if (res[0]==True):
-            token = hashlib.sha256()
-            token.update(psw)
-            token = str(token.hexdigest())
-            return Response('Token:'+ token + ',tipe:' + res[1])
+            
+            resp = serializer.IniciaSessao(psw,res[1],res[2])
+            resp = resp + ',User:' + instance.user
+            return Response(resp)
         else:
             pass
 

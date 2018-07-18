@@ -11,7 +11,7 @@ class User(models.Model):
     user_tipe = models.CharField(max_length=1)   
 
 class Session(models.Model):
-    user_nome = models.CharField(max_length=45)
+    user_id   = models.IntegerField(default=0)
     token     = models.CharField(max_length=64)
     user_tipe = models.CharField(max_length=1)   
     ativo     = models.BooleanField(default=False)

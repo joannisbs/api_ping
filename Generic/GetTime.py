@@ -26,7 +26,6 @@ class GetTime(object):
         Cotage = Cotage + self.minuto
         return Cotage
 
-
     def get_hour_minute(self):
         
         horaminuto = 	(str(self.hora).zfill(2) +":"+ 
@@ -67,7 +66,6 @@ class GetTime(object):
                 str(self.hora).zfill(2)+"h"+
                 str(self.minuto).zfill(2))
         return date
-
 
 
     def get_simple_semifull(self):
