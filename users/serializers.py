@@ -12,9 +12,10 @@ class UserSerializer (serializers.Serializer):
     user_tipe = serializers.CharField(max_length=1)   
 
     def Desmonta(self,instance):
-        instance.user = instance.get('user')
-        instance.word = instance.get('pass')
-        return instance
+        obj = Log()
+        obj.user = instance.get('user_nome')
+        obj.word = instance.get('user_pass')
+        return obj
     
     def Authentic(self, value, psw):
         res = User.objects.filter(user_nome=value)
@@ -65,3 +66,8 @@ class Session(serializers.Serializer):
             re.ativo = False
             re.save()
         return Sessionini.objects.create(**data)
+
+class Log:
+    def __init__(self):
+        self.user=''
+        self.word=''

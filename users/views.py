@@ -14,6 +14,8 @@ def Userlogin(request):
         serializer = UserSerializer(data=request.data)
         instance = serializer.Desmonta(request.data)
         psw= hashlib.md5()
+        print request.data
+      
         psw.update(instance.word)
         psw = str(psw.hexdigest())
         res = serializer.Authentic(instance.user,psw)
