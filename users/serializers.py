@@ -43,9 +43,6 @@ class UserSerializer (serializers.Serializer):
         resp = respostalogin.repLog('False','FalhaDeLogin','x','000',user)
         return resp
 
-    def RespSerializer(self,data):
-        return JSONRenderer().render(data)
-
 class RespSerializers(serializers.Serializer):
     token  = serializers.CharField(max_length=64)
     status = serializers.CharField(max_length=6)

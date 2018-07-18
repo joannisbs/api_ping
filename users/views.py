@@ -24,13 +24,13 @@ def Userlogin(request):
             
             resp = serializer.IniciaSessao(psw,res[1],res[2],instance.user)
             seri = RespSerializers(resp)
-            resp = serializer.RespSerializer(seri.data)
-            return Response(resp)
+            
+            return Response(seri.data)
         else:
             resp = serializer.BadLogin(instance.user)
             seri = RespSerializers(resp)
-            resp = serializer.RespSerializer(seri.data)
-            return Response(resp)
+            
+            return Response(seri.data)
 
 
 """
