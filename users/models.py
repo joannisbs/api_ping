@@ -9,3 +9,13 @@ class User(models.Model):
     user_nome = models.CharField(max_length=45)
     user_pass = models.CharField(max_length=32)
     user_tipe = models.CharField(max_length=1)   
+
+class Session(models.Model):
+    user_nome = models.CharField(max_length=45)
+    token     = models.CharField(max_length=64)
+    user_tipe = models.CharField(max_length=1)   
+    ativo     = models.BooleanField(default=False)
+    horaini   = models.IntegerField(default=0)
+    
+
+
