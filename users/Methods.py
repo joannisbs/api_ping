@@ -8,5 +8,8 @@ def GeraTokenRetorno(psw,time):
     return token
 
 def GeraTokenSession(token,nivel,user):
-    pass
-    
+    string = token + nivel + user
+    token = hashlib.sha256()
+    token.update(string)
+    token = str(token.hexdigest())
+    return token

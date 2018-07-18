@@ -10,8 +10,8 @@ class User(models.Model):
     user_pass = models.CharField(max_length=32)
     user_tipe = models.CharField(max_length=1)   
 
-class Session(models.Model):
-    user_id   = models.IntegerField(default=0)
+class Sessionini(models.Model):
+    user_ids   = models.IntegerField(default=0)
     token     = models.CharField(max_length=64)
     user_tipe = models.CharField(max_length=1)   
     ativo     = models.BooleanField(default=False)

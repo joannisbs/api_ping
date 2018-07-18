@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from users.models import User
+from rest_framework.renderers import JSONRenderer
+from users.models import User, Sessionini
 from Methods import *
 from getTime import GetTime
+import respostalogin
 
 class UserSerializer (serializers.Serializer):
     id        = serializers.IntegerField(read_only=True)
@@ -10,7 +12,6 @@ class UserSerializer (serializers.Serializer):
     user_tipe = serializers.CharField(max_length=1)   
 
     def Desmonta(self,instance):
-
         instance.user = instance.get('user')
         instance.word = instance.get('pass')
         return instance
@@ -24,14 +25,43 @@ class UserSerializer (serializers.Serializer):
         else:
             return [False,'nothing',0]
 
-    def IniciaSessao(self,psw,nivel,id):
+    def IniciaSessao(self,psw,nivel,ids,user):
         t = GetTime()
-        time = t.get_TimeInMinuts
+        time = t.get_TimeInMinuts()
         time = str(time)
         token = GeraTokenRetorno(psw,time)
+        resp = respostalogin.repLog('True',token,nivel,str(ids),user)
+        tokenses = GeraTokenSession(token,nivel,user)
+        sess = respostalogin.SSession(True,tokenses,nivel,ids,time)
+        sess = Session(sess)
+        resultado = sess.createSession(sess.data,ids)
+        print resultado
+        return resp
 
-        StringRet = "Status:True,Token:" + token
-        StringRet = StringRet + ",Nivel:" + nivel
-        StringRet = StringRet + ",Id:" + str(id)
-        return StringRet
+    def BadLogin(self,user):
+        resp = respostalogin.repLog('False','FalhaDeLogin','x','000',user)
+        return resp
 
+    def RespSerializer(self,data):
+        return JSONRenderer().render(data)
+
+class RespSerializers(serializers.Serializer):
+    token  = serializers.CharField(max_length=64)
+    status = serializers.CharField(max_length=6)
+    nivel  = serializers.CharField(max_length=1)
+    ids    = serializers.CharField(max_length=10)
+    user   = serializers.CharField(max_length=45)
+
+class Session(serializers.Serializer):
+    user_ids   = serializers.IntegerField(default=0)
+    token     = serializers.CharField(max_length=64)
+    user_tipe = serializers.CharField(max_length=1)   
+    ativo     = serializers.BooleanField(default=False)
+    horaini   = serializers.IntegerField(default=0)
+
+    def createSession(self, data, ids):
+        res = Sessionini.objects.filter(user_ids=ids,ativo=True)
+        for re in res:
+            re.ativo = False
+            re.save()
+        return Sessionini.objects.create(**data)

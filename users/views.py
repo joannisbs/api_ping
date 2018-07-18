@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 #from snippets.models import Snippet
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer, RespSerializers
 from users.models import User
 
 
@@ -20,11 +20,15 @@ def Userlogin(request):
         
         if (res[0]==True):
             
-            resp = serializer.IniciaSessao(psw,res[1],res[2])
-            resp = resp + ',User:' + instance.user
+            resp = serializer.IniciaSessao(psw,res[1],res[2],instance.user)
+            seri = RespSerializers(resp)
+            resp = serializer.RespSerializer(seri.data)
             return Response(resp)
         else:
-            pass
+            resp = serializer.BadLogin(instance.user)
+            seri = RespSerializers(resp)
+            resp = serializer.RespSerializer(seri.data)
+            return Response(resp)
 
 
 """
