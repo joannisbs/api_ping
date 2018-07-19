@@ -95,6 +95,7 @@ class RespSerializers(serializers.Serializer):
         nivel = data.get('nivel')
         user  = data.get('user')
         tokenses = GeraTokenSession(token,nivel,user)
+        
         res = Sessionini.objects.filter(user_ids = ids,ativo=True)
         
         t = GetTime()
@@ -120,10 +121,14 @@ class Session(serializers.Serializer):
 
 
     def createSession(self, data, ids):
+        limp = Sessionini.objects.filter(ativo=False)
+        for lipr in limp:
+            lipr.delete()
+
         res = Sessionini.objects.filter(user_ids=ids,ativo=True)
         for re in res:
             re.ativo = False
-            re.save()
+            re.delete()
         return Sessionini.objects.create(**data)
 
 class Log:
