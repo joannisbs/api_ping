@@ -3,12 +3,13 @@ from rest_framework.renderers import JSONRenderer
 from users.models import User, Sessionini
 from Methods import *
 from getTime import GetTime
-import respostalogin
+import respostas
+import hashlib
 
 class UserSerializer (serializers.Serializer):
     id        = serializers.IntegerField(read_only=True)
     user_nome = serializers.CharField(max_length=45)
-    user_pass = serializers.CharField(max_length=32)
+    user_pass = serializers.CharField(max_length=64)
     user_tipe = serializers.CharField(max_length=1)   
 
     def Desmonta(self,instance):
@@ -31,23 +32,55 @@ class UserSerializer (serializers.Serializer):
         time = t.get_TimeInMinuts()
         time = str(time)
         token = GeraTokenRetorno(psw,time)
-        resp = respostalogin.repLog('True',token,nivel,str(ids),user)
+        resp = respostas.repLog('True',token,nivel,str(ids),user)
         tokenses = GeraTokenSession(token,nivel,user)
-        sess = respostalogin.SSession(True,tokenses,nivel,ids,time)
+        sess = respostas.SSession(True,tokenses,nivel,ids,time)
         sess = Session(sess)
-        resultado = sess.createSession(sess.data,ids)
-        print resultado
+        sess.createSession(sess.data,ids)
+        
         return resp
 
     def BadLogin(self,user):
-        resp = respostalogin.repLog('False','FalhaDeLogin','x','000',user)
+        resp = respostas.repLog('False','FalhaDeLogin','x','000',user)
         return resp
     
-    def creaUSer(self,data):
-        nome = data.get('user_login')
-        pswd = data.get('user_psw')
-        pswr = data.get('user_re_psw')
+class newUserSerializer(serializers.Serializer):
+    user_name = serializers.CharField(max_length=45)
+    user_pasw = serializers.CharField(max_length=64)
+    user_pasr = serializers.CharField(max_length=64)
+    user_tipe = serializers.CharField(max_length=1)  
+   
+    def createUser(self,data):
+        nome = data.get('user_name')
+        pswd = data.get('user_pasw')
+        pswr = data.get('user_pasr')
         tipe = data.get('user_tipe')
+        
+        if pswd != pswr:
+            return respostas.newUser_resp(False,1) 
+
+        psw= hashlib.md5()
+        psw.update(pswd)
+        psw = str(psw.hexdigest()) 
+        
+        person = respostas.Usser(nome,psw,tipe)
+        namefind = person.user_nome
+        person = UserSerializer(person)
+        return self.salvaUser(person.data,namefind)
+
+
+    def salvaUser(self,data,namefind):
+        res = User.objects.filter(user_nome = namefind)
+        #return Sessionini.objects.create(**data)
+        if len(res)>0:
+            return respostas.newUser_resp(False,2) 
+        else: 
+            User.objects.create(**data)
+            return respostas.newUser_resp(True,0) 
+
+class respNewUserSerializers(serializers.Serializer):
+    sucess = serializers.BooleanField(default=False)
+    motive = serializers.IntegerField(read_only=True)
 
 class RespSerializers(serializers.Serializer):
     token  = serializers.CharField(max_length=64)
@@ -97,3 +130,4 @@ class Log:
     def __init__(self):
         self.user=''
         self.word=''
+

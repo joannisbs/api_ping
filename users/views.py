@@ -4,9 +4,12 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 #from snippets.models import Snippet
-from users.serializers import UserSerializer, RespSerializers
+from users.serializers import (UserSerializer, 
+                                RespSerializers,
+                                respNewUserSerializers, 
+                                newUserSerializer)
 from users.models import User
-
+import respostas
 
 @api_view(['GET', 'POST'])
 def Userlogin(request):
@@ -38,11 +41,15 @@ def NewUser(request):
         tokens = RespSerializers(request.data[0])
         #print tokens.data
         sessaovalida = tokens.ValidaSession(tokens.data)
-        print request.data[1]
+        dado = newUserSerializer(request.data[1])
         if sessaovalida:
-            pass
-
-        return Response(request.data)
+            resposta = dado.createUser(dado.data)
+            resposta = respNewUserSerializers(resposta)
+            return Response(resposta.data)
+        else:
+            respostas.newUser_resp(False,3) 
+            resposta = respNewUserSerializers(resposta)
+            return Response(resposta.data)
 
 
 

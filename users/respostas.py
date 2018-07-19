@@ -17,3 +17,17 @@ class SSession:
         self.user_ids = ids
         self.horaini = time
 
+
+class Usser:
+    def __init__(self,nome,pwd,tipe):
+        self.user_nome = nome
+        self.user_pass = pwd
+        self.user_tipe = tipe
+        
+class newUser_resp:
+    
+    def __init__(self, sucess, motive):
+        self.sucess = sucess
+        self.motive = motive
+        ''' Motives, 1 - senhas diferentes
+                     2 - usuario ja cadastrado'''
