@@ -14,7 +14,6 @@ def Userlogin(request):
         serializer = UserSerializer(data=request.data)
         instance = serializer.Desmonta(request.data)
         psw= hashlib.md5()
-        print request.data
       
         psw.update(instance.word)
         psw = str(psw.hexdigest())
@@ -31,6 +30,20 @@ def Userlogin(request):
             seri = RespSerializers(resp)
             
             return Response(seri.data)
+
+
+@api_view(['GET', 'POST'])
+def NewUser(request):
+    if request.method == 'POST':
+        tokens = RespSerializers(request.data[0])
+        #print tokens.data
+        sessaovalida = tokens.ValidaSession(tokens.data)
+        print request.data[1]
+        if sessaovalida:
+            pass
+
+        return Response(request.data)
+
 
 
 """
