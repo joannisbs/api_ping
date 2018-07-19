@@ -7,5 +7,6 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 
 urlpatterns = [
-    url(r'',views.Userlogin)
+    url(r'/login',views.Userlogin),
+    url(r'/newUser',views.NewUser)
 ]
