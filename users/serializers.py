@@ -42,6 +42,12 @@ class UserSerializer (serializers.Serializer):
     def BadLogin(self,user):
         resp = respostalogin.repLog('False','FalhaDeLogin','x','000',user)
         return resp
+    
+    def creaUSer(self,data):
+        nome = data.get('user_login')
+        pswd = data.get('user_psw')
+        pswr = data.get('user_re_psw')
+        tipe = data.get('user_tipe')
 
 class RespSerializers(serializers.Serializer):
     token  = serializers.CharField(max_length=64)
@@ -50,12 +56,35 @@ class RespSerializers(serializers.Serializer):
     ids    = serializers.CharField(max_length=10)
     user   = serializers.CharField(max_length=45)
 
+    def ValidaSession(self, data):
+        ids   = data.get('ids') 
+        token = data.get('token')
+        nivel = data.get('nivel')
+        user  = data.get('user')
+        tokenses = GeraTokenSession(token,nivel,user)
+        res = Sessionini.objects.filter(user_ids = ids,ativo=True)
+        
+        t = GetTime()
+        time = t.get_TimeInMinuts()
+        time = str(time)
+        time = long(time)
+
+        for re in res:
+            if re.token == tokenses:
+                if time - re.horaini > 720:
+                    re.ativo = False
+                    return False 
+                return True
+        return False
+        
+
 class Session(serializers.Serializer):
     user_ids   = serializers.IntegerField(default=0)
     token     = serializers.CharField(max_length=64)
     user_tipe = serializers.CharField(max_length=1)   
     ativo     = serializers.BooleanField(default=False)
     horaini   = serializers.IntegerField(default=0)
+
 
     def createSession(self, data, ids):
         res = Sessionini.objects.filter(user_ids=ids,ativo=True)
