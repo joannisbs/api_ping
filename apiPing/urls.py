@@ -21,5 +21,5 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 
 urlpatterns = [
-    url(r'^api/login/', include(userUrl))
+    url(r'^api/user', include(userUrl))
 ]
