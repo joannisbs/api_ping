@@ -1,10 +1,12 @@
 from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
-from users.models import User, Sessionini
+from users.models import User, Sessionini, History
 from Methods import *
 from getTime import GetTime
 import respostas
 import hashlib
+
+
 
 class UserSerializer (serializers.Serializer):
     id        = serializers.IntegerField(read_only=True)
@@ -38,6 +40,11 @@ class UserSerializer (serializers.Serializer):
         sess = Session(sess)
         sess.createSession(sess.data,ids)
         
+        # grava modificacoes
+        time = t.get_full_db()
+        obj = respostas.objHistory(str(ids),time,"Iniciou a Sessao")
+        obj = Historyserial(obj)
+        obj.Save(obj.data)
         return resp
 
     def BadLogin(self,user):
@@ -50,7 +57,7 @@ class newUserSerializer(serializers.Serializer):
     user_pasr = serializers.CharField(max_length=64)
     user_tipe = serializers.CharField(max_length=1)  
    
-    def createUser(self,data):
+    def createUser(self,data,ids):
         nome = data.get('user_name')
         pswd = data.get('user_pasw')
         pswr = data.get('user_pasr')
@@ -65,6 +72,13 @@ class newUserSerializer(serializers.Serializer):
         
         person = respostas.Usser(nome,psw,tipe)
         namefind = person.user_nome
+
+        t = GetTime()
+        time = t.get_full_db()
+        obj = respostas.objHistory(str(ids),str(time),"Criou o Usuario: " + namefind + " tipo: " +person.user_tipe)
+        obj = Historyserial(obj)
+        obj.Save(obj.data)
+
         person = UserSerializer(person)
         return self.salvaUser(person.data,namefind)
 
@@ -106,10 +120,10 @@ class RespSerializers(serializers.Serializer):
         for re in res:
             if re.token == tokenses:
                 if time - re.horaini > 720:
-                    re.ativo = False
-                    return False 
-                return True
-        return False
+                    re.ativo = [False,0]
+                    return [False,0] 
+                return [True,ids]
+        return [False,0]
         
 
 class Session(serializers.Serializer):
@@ -136,3 +150,10 @@ class Log:
         self.user=''
         self.word=''
 
+class Historyserial(serializers.Serializer):
+    user_ids = serializers.IntegerField(default=0)
+    hora     = serializers.CharField(max_length=17)
+    event    = serializers.CharField(max_length=100)
+
+    def Save(self,data):
+        return History.objects.create(**data)

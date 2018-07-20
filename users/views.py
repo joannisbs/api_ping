@@ -42,8 +42,8 @@ def NewUser(request):
         #print tokens.data
         sessaovalida = tokens.ValidaSession(tokens.data)
         dado = newUserSerializer(request.data[1])
-        if sessaovalida:
-            resposta = dado.createUser(dado.data)
+        if sessaovalida[0]:
+            resposta = dado.createUser(dado.data,sessaovalida[1])
             resposta = respNewUserSerializers(resposta)
             return Response(resposta.data)
         else:

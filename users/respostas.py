@@ -31,3 +31,8 @@ class newUser_resp:
         self.motive = motive
         ''' Motives, 1 - senhas diferentes
                      2 - usuario ja cadastrado'''
+class objHistory:
+    def __init__(self,user_ids,hora,event):
+        self.user_ids = user_ids
+        self.hora     = hora
+        self.event    = event
