@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 
 def GeraTokenRetorno(psw,time):
@@ -13,6 +14,7 @@ def GeraTokenSession(token,nivel,user):
     token.update(string)
     token = str(token.hexdigest())
     return token
+
 
 def decodificatipodeconta(valor):
         if valor == 1:

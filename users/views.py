@@ -4,11 +4,12 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 #from snippets.models import Snippet
-from users.serializers import (UserSerializer, 
-                                RespSerializers,
-                                respNewUserSerializers, 
-                                newUserSerializer,
-                                getListUsers)
+
+from users.seriUser import UserSerializer
+from users.seriGetListUsers import getListUsers
+from users.seriNewUser import newUserSerializer,respNewUserSerializers
+from users.seriResp import RespSerializers
+
 from users.models import User
 import respostas
 
