@@ -1,4 +1,8 @@
 from rest_framework import serializers
+from users.seriUserHistory import CriaHistorico
+from users.Methods import decodificatipodeconta
+from users.seriUser import UserSerializer
+from users.models import User
 import respostas
 import hashlib
 from getTime import GetTime
@@ -25,24 +29,22 @@ class newUserSerializer(serializers.Serializer):
         person = respostas.Usser(nome,psw,tipe)
         namefind = person.user_nome
 
-        t = GetTime()
-        time = t.get_full_db()
         tipoConta = decodificatipodeconta(person.user_tipe)
-        obj = respostas.objHistory(str(ids),str(time),"Criou o Usuario: " + namefind + " tipo: " + tipoConta)
-        obj = Historyserial(obj)
-        obj.Save(obj.data)
 
+        
         person = UserSerializer(person)
-        return self.salvaUser(person.data,namefind)
+        return self.salvaUser(person.data,namefind,tipoConta)
 
 
-    def salvaUser(self,data,namefind):
+    def salvaUser(self,data,namefind,tipoConta):
         res = User.objects.filter(user_nome = namefind)
         #return Sessionini.objects.create(**data)
         if len(res)>0:
             return respostas.newUser_resp(False,2) 
         else: 
             User.objects.create(**data)
+            string = "Criou o Usuario: " + str(namefind) + " tipo: " + str(tipoConta)
+            CriaHistorico(str(ids),string)
             return respostas.newUser_resp(True,0) 
 
 class respNewUserSerializers(serializers.Serializer):

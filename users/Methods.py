@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 
 def GeraTokenRetorno(psw,time):
@@ -15,22 +16,23 @@ def GeraTokenSession(token,nivel,user):
     return token
 
 def decodificatipodeconta(valor):
-        if valor == 1:
-            return 'Administrador'
+    if valor == '1':
+        return 'Administrador'
 
-        elif valor ==2:
-            return 'MóduloProjeto'
-        
-        elif valor ==3:
-            return 'Módulo'
-        
-        elif valor ==4:
-            return 'Projeto'
+    elif valor =='2':
+        return 'MóduloProjeto'
+    
+    elif valor =='3':
+        return 'Módulo'
+    
+    elif valor =='4':
+        return 'Projeto'
 
-        elif valor ==5:
-            return 'Expedição'
-        
-        elif valor ==7:
-            return 'Suporte'
-        
+    elif valor =='5':
+        return 'Expedição'
+    
+    elif valor =='7':
+        return 'Suporte'
+
+
    

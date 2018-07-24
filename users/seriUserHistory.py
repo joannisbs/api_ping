@@ -1,5 +1,7 @@
-from rest_framework import serializers
-from users.models import History
+from rest_framework  import serializers
+from users.getTime   import GetTime
+from users.models    import History
+from users.respostas import objHistory
 
 class Historyserial(serializers.Serializer):
     user_ids = serializers.IntegerField(default=0)
@@ -8,3 +10,11 @@ class Historyserial(serializers.Serializer):
 
     def Save(self,data):
         return History.objects.create(**data)
+    
+def CriaHistorico(quem,mensagem):
+    t = GetTime()
+    time = t.get_full_db()
+    obj = objHistory(str(quem),str(time),mensagem)
+    obj = Historyserial(obj)
+    obj.Save(obj.data)
+    return False

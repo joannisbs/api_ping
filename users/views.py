@@ -9,6 +9,7 @@ from users.seriUser import UserSerializer
 from users.seriGetListUsers import getListUsers
 from users.seriNewUser import newUserSerializer,respNewUserSerializers
 from users.seriResp import RespSerializers
+from users.seriGetHistoryUsers import HistoryUsuario
 
 from users.models import User
 import respostas
@@ -62,7 +63,24 @@ def ListUsers(request):
         if sessaovalida[0]:
             resp = getListUsers(request.data[1],request.data[2])
             return Response(resp)
-            
+
+@api_view(['POST'])
+def historyUsers(request):
+    if request.method == 'POST':
+        tokens = RespSerializers(request.data[0])
+        #print tokens.data
+        sessaovalida = tokens.ValidaSession(tokens.data)
+        if sessaovalida[0]:
+            resp = HistoryUsuario(request.data[1],request.data[2],request.data[3])
+            return Response(resp)
+
+
+
+
+
+
+
+
 """
     List all code snippets, or create a new snippet.
     
