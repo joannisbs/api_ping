@@ -21,7 +21,7 @@ class UserSerializer (serializers.Serializer):
         return obj
     
     def Authentic(self, value, psw):
-        res = User.objects.filter(user_nome=value)
+        res = User.objects.filter(user_nome=value,user_ativo='s')|User.objects.filter(user_nome=value,user_ativo='A')
         for re in res:
             pswli =  re.user_pass
         if pswli == psw:
@@ -157,3 +157,38 @@ class Historyserial(serializers.Serializer):
 
     def Save(self,data):
         return History.objects.create(**data)
+
+def getListUsers(page, filter):
+    
+    print filter
+    number = int(page) * 20
+    number1 = number - 20
+    
+    if filter == "all":
+        respo = []
+        otherpage = 0
+        tamanho = len(User.objects.filter(user_ativo='s'))
+        res = User.objects.filter(user_ativo='s').order_by("user_nome")[number1:number]
+        if number>tamanho:
+            number=tamanho
+            otherpage = 1
+        respo.append([str(number1+1),str(number),str(tamanho),str(otherpage)])
+        for re in res:
+            person = [re.id,re.user_nome,re.user_tipe]
+            respo.append(person)
+        return respo
+    else:
+        
+        respo = []
+        otherpage = 0
+        tamanho = len(User.objects.filter(user_nome__icontains=filter, user_ativo='s'))
+        res = User.objects.filter(user_nome__icontains=filter, user_ativo='s').order_by("user_nome")[number1:number]
+        if number>tamanho:
+            number=tamanho
+            otherpage = 1
+        respo.append([str(number1+1),str(number),str(tamanho),str(otherpage)])
+        for re in res:
+            person = [re.id,re.user_nome,re.user_tipe]
+            respo.append(person)
+        filter = ''
+        return respo

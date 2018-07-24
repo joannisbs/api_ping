@@ -8,7 +8,8 @@ from django.db import models
 class User(models.Model):
     user_nome = models.CharField(max_length=45)
     user_pass = models.CharField(max_length=32)
-    user_tipe = models.CharField(max_length=1)   
+    user_tipe = models.CharField(max_length=1)
+    user_ativo = models.CharField(max_length=1, default='s')   
 
 class Sessionini(models.Model):
     user_ids   = models.IntegerField(default=0)

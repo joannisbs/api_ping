@@ -7,11 +7,12 @@ from rest_framework.response import Response
 from users.serializers import (UserSerializer, 
                                 RespSerializers,
                                 respNewUserSerializers, 
-                                newUserSerializer)
+                                newUserSerializer,
+                                getListUsers)
 from users.models import User
 import respostas
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def Userlogin(request):
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
@@ -35,7 +36,7 @@ def Userlogin(request):
             return Response(seri.data)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def NewUser(request):
     if request.method == 'POST':
         tokens = RespSerializers(request.data[0])
@@ -51,8 +52,16 @@ def NewUser(request):
             resposta = respNewUserSerializers(resposta)
             return Response(resposta.data)
 
-
-
+@api_view(['POST'])
+def ListUsers(request):
+    if request.method == 'POST':
+        tokens = RespSerializers(request.data[0])
+        #print tokens.data
+        sessaovalida = tokens.ValidaSession(tokens.data)
+        if sessaovalida[0]:
+            resp = getListUsers(request.data[1],request.data[2])
+            return Response(resp)
+            
 """
     List all code snippets, or create a new snippet.
     
