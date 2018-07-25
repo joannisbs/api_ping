@@ -33,10 +33,10 @@ class newUserSerializer(serializers.Serializer):
 
         
         person = UserSerializer(person)
-        return self.salvaUser(person.data,namefind,tipoConta)
+        return self.salvaUser(person.data,namefind,tipoConta,ids)
 
 
-    def salvaUser(self,data,namefind,tipoConta):
+    def salvaUser(self,data,namefind,tipoConta,ids):
         res = User.objects.filter(user_nome = namefind)
         #return Sessionini.objects.create(**data)
         if len(res)>0:

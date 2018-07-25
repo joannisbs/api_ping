@@ -1,6 +1,6 @@
 from rest_framework  import serializers
 from users.getTime   import GetTime
-from users.models    import History
+from users.models    import HistoryUser
 from users.respostas import objHistory
 
 class Historyserial(serializers.Serializer):
@@ -9,7 +9,7 @@ class Historyserial(serializers.Serializer):
     event    = serializers.CharField(max_length=100)
 
     def Save(self,data):
-        return History.objects.create(**data)
+        return HistoryUser.objects.create(**data)
     
 def CriaHistorico(quem,mensagem):
     t = GetTime()

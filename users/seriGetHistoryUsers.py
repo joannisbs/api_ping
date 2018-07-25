@@ -1,4 +1,4 @@
-from users.models import History
+from users.models import HistoryUser
 
 def HistoryUsuario(iduser,page, filter):
     number  = int(page) * 50
@@ -8,9 +8,9 @@ def HistoryUsuario(iduser,page, filter):
         respo     = []
         otherpage = 0
 
-        tamanho   = len(History.objects.filter(user_ids=iduser))
+        tamanho   = len(HistoryUser.objects.filter(user_ids=iduser))
 
-        res = History.objects.filter(user_ids=iduser)[number1:number]
+        res = HistoryUser.objects.filter(user_ids=iduser)[number1:number]
 
         if number>tamanho:
             number=tamanho
@@ -27,10 +27,10 @@ def HistoryUsuario(iduser,page, filter):
         respo = []
         otherpage = 0
 
-        tamanho = len(History.objects.filter(
+        tamanho = len(HistoryUser.objects.filter(
             user_nome__icontains=filter, user_ids=iduser))
         
-        res = History.objects.filter(
+        res = HistoryUser.objects.filter(
             user_nome__icontains=filter, user_ids=iduser)[number1:number]
         
         if number > tamanho:

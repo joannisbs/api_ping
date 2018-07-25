@@ -45,6 +45,11 @@ class UserSerializer (serializers.Serializer):
         resp = respostas.repLog('False','FalhaDeLogin','x','000',user)
         return resp
 
+def GetUserById(ids):
+    res = User.objects.filter(id=ids)
+    for re in res:
+        return re.user_nome
+
 class Log:
     def __init__(self):
         self.user=''
