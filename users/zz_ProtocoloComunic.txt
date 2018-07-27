@@ -1,0 +1,23 @@
+Todas as Respostas de solicitacao da API devem ser contruidas da seguinte forma: 
+Resposta{
+    [ 
+        Sucess: Boolean,
+        Motivo: Integer 
+    ],
+    [
+        ...Listofdatas
+    ]
+}
+
+    Lista de Motivos 
+    1 = falha no login
+    2 = sem permissao
+    3 = erro desconhecido
+
+Detalhando cada comunicacao:
+
+Login:
+    Recebe  
+        Objeto Usuário
+    Envia 
+        

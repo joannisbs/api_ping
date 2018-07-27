@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
 from users.models import User
 from getTime import GetTime
+from respostas import Resposta_padrao
 import respostas
 import hashlib
 import seriMethodos
@@ -44,6 +45,17 @@ class UserSerializer (serializers.Serializer):
     def BadLogin(self,user):
         resp = respostas.repLog('False','FalhaDeLogin','x','000',user)
         return resp
+
+def DeleteUsuario(ids):
+    resp = Resposta_padrao(False,"1")
+    res = User.objects.filter(id=ids)
+    for re in res:
+        re.user_ativo = 'n'
+        re.save()
+        resp = [True,"0"]
+    
+    return resp
+
 
 def GetUserById(ids):
     res = User.objects.filter(id=ids)

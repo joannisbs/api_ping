@@ -3,7 +3,7 @@ import seriMethodos
 from users.models import Sessionini
 from getTime import GetTime
 
-class RespSerializers(serializers.Serializer):
+class RespLogin(serializers.Serializer):
     token  = serializers.CharField(max_length=64)
     status = serializers.CharField(max_length=6)
     nivel  = serializers.CharField(max_length=1)

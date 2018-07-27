@@ -20,16 +20,16 @@ def decodificatipodeconta(valor):
         return 'Administrador'
 
     elif valor =='2':
-        return 'MóduloProjeto'
+        return 'ModuloProjeto'
     
     elif valor =='3':
-        return 'Módulo'
+        return 'Modulo'
     
     elif valor =='4':
         return 'Projeto'
 
     elif valor =='5':
-        return 'Expedição'
+        return 'Expedicao'
     
     elif valor =='7':
         return 'Suporte'
