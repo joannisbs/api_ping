@@ -15,7 +15,7 @@ class TokenResponseObject:
         self.nivel  = ''
         self.ids    = ''
         self.user   = ''
-        self.motive = ''
+        
 
 class CreateSessionObject:
     def __init__(self):

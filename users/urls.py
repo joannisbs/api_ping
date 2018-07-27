@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'login',z1_views_User.Userlogin_View),
 
     # url( r'newUser',       z1_views_User.NewUser       ),
-    # url( r'ListUsers',     z1_views_User.ListUsers     ),
+    url( r'ListUsers',     z1_views_User.ListUsers     ),
     # url( r'HistoryUsers',  z1_views_User.historyUsers  ),
     # url( r'DeleteUsers',   z1_views_User.DeleteUser    ),
 

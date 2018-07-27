@@ -35,8 +35,10 @@ class UserSerializer (serializers.Serializer):
         time = t.get_TimeInMinuts()
         time = str(time)
         token = seriMethodos.GeraTokenRetorno(psw,time)
+
         resp = respostas.repLog('True',token,nivel,str(ids),user)
         tokenses = seriMethodos.GeraTokenSession(token,nivel,user)
+        
         sess = respostas.SSession(True,tokenses,nivel,ids,time)
         sess = Session(sess)
         sess.createSession(sess.data,ids)

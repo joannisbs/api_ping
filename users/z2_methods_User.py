@@ -1,6 +1,8 @@
 # Imports da camada de interacao com banco:
-from z3_dbGet_User import Get_UserActivesForLogin
+from z3_dbGet_User import ( Get_UserActivesForLogin,
+                            Get_SessionValid)
 from z3_dbPost_User import SessionDbSeri
+from z3_dbUpdt_User import Updt_SessiontoInvalid
 
 # Imports de ferramentas:
 from z_frame_cript import Cripto_md5, Cripto_sha256
@@ -12,6 +14,25 @@ from z2_Rinterface_user import (S_StandardResponse_Interface,
                                 CreateSessionInterface)
 
 # Metodos de interacao com a camada de View:
+def ValidSession_Method ( data ):
+    tokenSession = GenerateTokenSessao( str(data.token), str(data.nivel), str(data.ids))    
+    session = Get_SessionValid ( data.ids )
+    
+    if session:
+        print session.token 
+        print tokenSession
+        if session.token == tokenSession:
+            print "SENHA BATEU"
+            time = long(GetTimeMinuts())
+            if time - session.horaini > 720:
+                Updt_SessiontoInvalid( data.ids )
+                return False
+            else:
+                return True
+    return False
+
+
+
 
 def Userlogin_Method ( data ):
     person = Get_UserActivesForLogin ( data.username )
@@ -46,22 +67,22 @@ def Userlogin_Method ( data ):
         response = []
         response.append(S_StandardResponse_Interface(False,3))
         return response
-        
+
+    response = []
+    response.append(S_StandardResponse_Interface(False,3))
+    return response    
 
 # Metodos de interacao com outros metodos
 def InitSessionofLogin(person):
     time = GetTimeMinuts()
     
     tokenResponse = GenerateTokenResponse( person.user_pass, time)
-    tokenSession = GenerateTokenSessao( tokenResponse, person.user_tipe, str(person.id))
+    tokenSession = GenerateTokenSessao( str(tokenResponse), str(person.user_tipe), str(person.id))
     
     if CreateSession(tokenSession,person,time):
         return tokenResponse
     else:
-        return False
-
-
-    
+        return False    
 
 def CreateSession(tokenSession,person,time):
     sessionObject = CreateSessionInterface(tokenSession,person,time)
