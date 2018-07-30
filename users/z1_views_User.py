@@ -8,10 +8,13 @@ from rest_framework.response import Response
 #import da Interface.
 from z1_interface_User import R_Userlogin_Interface
 from z1_interface_User import R_GetTokenfromClient
-from z2_methods_User import ValidSession_Method
+from z1_interface_User import R_GetListUser_Interface
 
 #imports da camada de Methodos.
 from z2_methods_User import Userlogin_Method
+from z2_methods_User import ValidSession_Method
+from z2_methods_User import ReposnseTokenError
+from z2_methods_User import GetListUser_Method
 
 @api_view(['POST'])
 def Userlogin_View(request):
@@ -21,16 +24,22 @@ def Userlogin_View(request):
             return Response (Userlogin_Method (TentativaLogin))
         except:
             return Response (404)
+    else:
+        return Response (403)
 
 
 @api_view(['POST'])
 def ListUsers(request):
     if request.method == 'POST':
-        sessaoUser = R_GetTokenfromClient(request.data[0])
-        sessaovalida = ValidSession_Method(sessaoUser)
-        if sessaovalida:
-            print "Valida"
-        print "Invalida"
+        try:
+            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaovalida = ValidSession_Method(sessaoUser)
+            if sessaovalida:
+                filtros = R_GetListUser_Interface(request.data[1])
+                return Response(GetListUser_Method(filtros))
+            return Response(ReposnseTokenError())
+        except:
+            return Response (403)
 
 
 #     if request.method == 'POST':

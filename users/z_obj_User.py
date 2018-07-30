@@ -24,3 +24,21 @@ class CreateSessionObject:
         self.user_tipe = ''
         self.user_ids  = ''
         self.horaini   = ''
+
+class GetListUserObject:
+    def __init__(self):
+        self.page     = ''
+        self.filtro   = ''
+
+class Get_ListUsersPersonObject:
+    def __init__(self):
+        self.ids    = ''
+        self.user   = ''
+        self.type   = ''
+
+class Get_ListUsersSizeObject:
+    def __init__(self):
+        self.initpag   = ''
+        self.endpag    = ''
+        self.size      = ''
+        self.next      = ''

@@ -43,6 +43,18 @@ class TokenResponse_Serializer(serializers.Serializer):
     ids    = serializers.CharField(max_length=10)
     user   = serializers.CharField(max_length=45)
 
+class SizeListUser_Serializer(serializers.Serializer):
+    initpag = serializers.CharField(max_length=6)
+    endpag  = serializers.CharField(max_length=6)
+    size    = serializers.CharField(max_length=6)
+    next    = serializers.CharField(max_length=1)
+
+class ListUsers_Serializer(serializers.Serializer):
+    ids  = serializers.CharField(max_length=10)
+    user = serializers.CharField(max_length=45)
+    type = serializers.CharField(max_length=1)
+
+
 # Interfaces de Banco
 
 def CreateSessionInterface(tokenSession,person,time):
