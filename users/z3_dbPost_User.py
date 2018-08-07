@@ -8,8 +8,12 @@ class Post_UserDbSeri (serializers.Serializer):
     user_tipe = serializers.CharField(max_length=1) 
 
     def Save(self,data):
-        User.objects.create(**data)
-
+        try:
+            User.objects.create(**data)
+            return True
+        except:
+            return False
+            
 class Post_SessionDbSeri (serializers.Serializer):
     user_ids   = serializers.IntegerField(default=0)
     token     = serializers.CharField(max_length=64)
@@ -26,4 +30,5 @@ class Post_HistoryDbSeri (serializers.Serializer):
     event    = serializers.CharField(max_length=100)
 
     def Save(self,data):
+        
         return HistoryUser.objects.create(**data)

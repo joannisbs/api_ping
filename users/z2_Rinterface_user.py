@@ -6,7 +6,7 @@ from z_obj_User import ( StandartResponseObject,
                          TokenResponseObject,
                          CreateSessionObject)
 
-
+from z_obj_User import Post_UserObject
 
 
 # Send Interface
@@ -54,7 +54,16 @@ class ListUsers_Serializer(serializers.Serializer):
     user = serializers.CharField(max_length=45)
     type = serializers.CharField(max_length=1)
 
+class ListHistoryUsers_Serializer(serializers.Serializer):
+    hora     = serializers.CharField(max_length=17)
+    event    = serializers.CharField(max_length=100)
 
+class User_Serializer(serializers.Serializer):
+    user_nome = serializers.CharField(max_length=45)
+    user_pass = serializers.CharField(max_length=32)
+    user_tipe = serializers.CharField(max_length=1)
+    user_ativo = serializers.CharField(max_length=1)  
+    
 # Interfaces de Banco
 
 def CreateSessionInterface(tokenSession,person,time):
@@ -64,4 +73,13 @@ def CreateSessionInterface(tokenSession,person,time):
     response.user_tipe = str(person.user_tipe)
     response.user_ids  = str(person.id)
     response.horaini   = time
+    return response
+
+def CreateUserInterface(login,tipe):
+    response = Post_UserObject()
+    response.user_ativo = 's'
+    response.user_pass  = "dd6e5e5918e94d997c686fcebc56922f"
+    response.user_nome  = login
+    response.user_tipe  = tipe
+
     return response

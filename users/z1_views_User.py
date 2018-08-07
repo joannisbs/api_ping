@@ -9,12 +9,24 @@ from rest_framework.response import Response
 from z1_interface_User import R_Userlogin_Interface
 from z1_interface_User import R_GetTokenfromClient
 from z1_interface_User import R_GetListUser_Interface
+from z1_interface_User import R_AlterTypeUser_Interface
+from z1_interface_User import R_GetListhistoryUser_Interface
+from z1_interface_User import R_NewUser_Interface
 
 #imports da camada de Methodos.
 from z2_methods_User import Userlogin_Method
 from z2_methods_User import ValidSession_Method
 from z2_methods_User import ReposnseTokenError
 from z2_methods_User import GetListUser_Method
+from z2_methods_User import DeleteUser_Method
+from z2_methods_User import ResponseStandart
+from z2_methods_User import ResponseStandartWithMotive
+from z2_methods_User import Reactivate_user_Method
+from z2_methods_User import ResetUser_Method
+from z2_methods_User import AlterTypeUser_Method
+from z2_methods_User import GethistoryUser_Method
+from z2_methods_User import CreateUser_Method 
+from z2_methods_User import NewPass_Method
 
 @api_view(['POST'])
 def Userlogin_View(request):
@@ -29,64 +41,200 @@ def Userlogin_View(request):
 
 
 @api_view(['POST'])
-def ListUsers(request):
+def GetHystoryUser_View(request):
+    if request.method == 'POST':
+        try:
+            sessaoUser = R_GetTokenfromClient(request.data[0])
+           
+            sessaovalida = ValidSession_Method(sessaoUser)
+            if sessaovalida:
+                filtros = R_GetListhistoryUser_Interface(request.data[1])
+                return Response(GethistoryUser_Method(filtros.ids,filtros.page,filtros.filtro))
+
+            else:
+                return Response(ReposnseTokenError())
+        
+               
+        except:
+            return Response (403)
+
+
+@api_view(['POST'])
+def ListUsers_View(request):
     if request.method == 'POST':
         try:
             sessaoUser = R_GetTokenfromClient(request.data[0])
             sessaovalida = ValidSession_Method(sessaoUser)
             if sessaovalida:
                 filtros = R_GetListUser_Interface(request.data[1])
-                return Response(GetListUser_Method(filtros))
+                return Response(GetListUser_Method(filtros,True))
             return Response(ReposnseTokenError())
         except:
             return Response (403)
 
+@api_view(['POST'])
+def DesactivateListUsers_View(request):
+    if request.method == 'POST':
+        try:
+            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaovalida = ValidSession_Method(sessaoUser)
+            if sessaovalida:
+                filtros = R_GetListUser_Interface(request.data[1])
+                return Response(GetListUser_Method(filtros,False))
+            return Response(ReposnseTokenError())
+        except:
+            return Response (403)
 
-#     if request.method == 'POST':
-#         tokens = RespSerializers(request.data[0])
-#         #print tokens.data
-#         sessaovalida = tokens.ValidaSession(tokens.data)
-#         if sessaovalida[0]:
-#             resp = getListUsers(request.data[1],request.data[2])
-#             return Response(resp)
+@api_view(['POST'])
+def EditUserType_View(request):
+    response = []
+    if request.method == 'POST':
+        try:
+            sessaoUser = R_GetTokenfromClient(request.data[0])
+            if sessaoUser.nivel == '1':
+                sessaovalida = ValidSession_Method(sessaoUser)
+                if sessaovalida:
+                    response.append(ResponseStandart(True))
+                    person = R_AlterTypeUser_Interface(request.data[1])
+                    sucess = AlterTypeUser_Method ( sessaoUser.ids, 
+                                                        person.ids, person.type)
+                    
+                    if sucess:
+                        response.append(ResponseStandart(True))
+                        return Response (response)
+                    else:
+                        response.append(ResponseStandart(False))
+                        return Response (response)
+                else:
+                    return Response(ReposnseTokenError())
+            else:
+                return Response(ReposnseTokenError())
+        except:
+            return Response (403)
+
+@api_view(['POST'])
+def ResetPasswordStandart_View(request):
+    response = []
+    if request.method == 'POST':
+        try:
+            sessaoUser = R_GetTokenfromClient(request.data[0])
+            if sessaoUser.nivel == '1':
+                sessaovalida = ValidSession_Method(sessaoUser)
+                if sessaovalida:
+                    response.append(ResponseStandart(True))
+                    iduser = request.data[1]
+                    sucess = ResetUser_Method(sessaoUser.ids, iduser)
+                    if sucess:
+                        response.append(ResponseStandart(True))
+                        return Response (response)
+                    else:
+                        response.append(ResponseStandart(False))
+                        return Response (response)
+                else:
+                    return Response(ReposnseTokenError())
+            else:
+                return Response(ReposnseTokenError())
+        except:
+            return Response (403)
 
 
 
-# @api_view(['POST'])
-# def NewUser(request):
-#     if request.method == 'POST':
-#         tokens = RespSerializers(request.data[0])
-#         #print tokens.data
-#         sessaovalida = tokens.ValidaSession(tokens.data)
-#         dado = newUserSerializer(request.data[1])
-#         if sessaovalida[0]:
-#             resposta = dado.createUser(dado.data,sessaovalida[1])
-#             resposta = respNewUserSerializers(resposta)
-#             return Response(resposta.data)
-#         else:
-#             respostas.newUser_resp(False,3) 
-#             resposta = respNewUserSerializers(resposta)
-#             return Response(resposta.data)
+@api_view(['POST'])
+def DeleteUser_View(request):
+    response = []
+    if request.method == 'POST':
+        try:
+            sessaoUser = R_GetTokenfromClient(request.data[0])
+            if sessaoUser.nivel == '1':
+                sessaovalida = ValidSession_Method(sessaoUser)
+                if sessaovalida:
+                    response.append(ResponseStandart(True))
+                    iduser = request.data[1]
+                    sucess = DeleteUser_Method(sessaoUser.ids, iduser)
+                    if sucess:
+                        response.append(ResponseStandart(True))
+                        return Response (response)
+                    else:
+                        response.append(ResponseStandart(False))
+                        return Response (response)
+                else:
+                    return Response(ReposnseTokenError())
+            else:
+                return Response(ReposnseTokenError())
+        except:
+            return Response (403)
 
-# 
+@api_view(['POST'])
+def ReactivateUser_View(request):
+    response = []
+    if request.method == 'POST':
+        try:
+            sessaoUser = R_GetTokenfromClient(request.data[0])
+            if sessaoUser.nivel == '1':
+                sessaovalida = ValidSession_Method(sessaoUser)
+                if sessaovalida:
+                    response.append(ResponseStandart(True))
+                    iduser = request.data[1]
+                    sucess = Reactivate_user_Method(sessaoUser.ids, iduser)
+                    if sucess:
+                        response.append(ResponseStandart(True))
+                        return Response (response)
+                    else:
+                        response.append(ResponseStandart(False))
+                        return Response (response)
+                else:
+                    return Response(ReposnseTokenError())
+            else:
+                return Response(ReposnseTokenError())
+        except:
+            return Response (403)
 
-# @api_view(['POST'])
-# def historyUsers(request):
-#     if request.method == 'POST':
-#         tokens = RespSerializers(request.data[0])
-#         #print tokens.data
-#         sessaovalida = tokens.ValidaSession(tokens.data)
-#         if sessaovalida[0]:
-#             resp = HistoryUsuario(request.data[1],request.data[2],request.data[3])
-#             return Response(resp)
 
-# @api_view(['POST'])
-# def DeleteUser(request):
-#     if request.method == 'POST':
-#         tokens = RespSerializers(request.data[0])
-#         sessaovalida = tokens.ValidaSession(tokens.data)
-#         if sessaovalida[0]:
-#             print request.data[1]
-#             resp = DeleteUsuario(request.data[1])
-            
-#             return Response(resp)
+
+
+@api_view(['POST'])
+def NewUser_View(request):
+    response = []
+    if request.method == 'POST':
+        try:
+            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaovalida = ValidSession_Method(sessaoUser)
+            if sessaovalida:
+                response.append(ResponseStandart(True))
+                if sessaoUser.nivel == '1':
+                    response.append(ResponseStandart(True))
+                    UserRequest = R_NewUser_Interface(request.data[1])
+                    sucessSave = CreateUser_Method(sessaoUser.ids,UserRequest.user, UserRequest.type)
+                    if sucessSave == 1:
+                        response.append(ResponseStandart(True))
+                    else:
+                        response.append(ResponseStandartWithMotive(False,sucessSave))
+                    return Response (response)
+            return Response(ReposnseTokenError())
+        except:
+            return Response (403)      
+    return Response (403)
+
+ 
+
+
+
+@api_view(['POST'])
+def NewPassword_View(request):
+    response = []
+    if request.method == 'POST':
+        try:
+            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaovalida = ValidSession_Method(sessaoUser)
+            if sessaovalida:
+                response.append(ResponseStandart(True))
+                password = request.data[1]
+                if NewPass_Method(sessaoUser.ids,password):
+                    response.append(ResponseStandart(True))
+                    return Response(response)
+            response.append(ResponseStandart(False))
+            return Response(response)
+        except:
+            response.append(ResponseStandart(False))
+            response.append(ResponseStandart(False))
+            return Response(response)
