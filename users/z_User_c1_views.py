@@ -6,27 +6,29 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 #import da Interface.
-from z_User_c1_interface import R_Userlogin_Interface
-from z_User_c1_interface import R_GetTokenfromClient
-from z_User_c1_interface import R_GetListUser_Interface
 from z_User_c1_interface import R_AlterTypeUser_Interface
 from z_User_c1_interface import R_GetListhistoryUser_Interface
+from z_User_c1_interface import R_GetListUser_Interface
+from z_User_c1_interface import R_GetTokenfromClient_Interface
 from z_User_c1_interface import R_NewUser_Interface
+from z_User_c1_interface import R_Userlogin_Interface
 
 #imports da camada de Methodos.
-from z_User_c2_methods import Userlogin_Method
-from z_User_c2_methods import ValidSession_Method
-from z_User_c2_methods import ReposnseTokenError
-from z_User_c2_methods import GetListUser_Method
+from z_User_c2_methods import AlterTypeUser_Method
+from z_User_c2_methods import CreateUser_Method
 from z_User_c2_methods import DeleteUser_Method
+from z_User_c2_methods import GethistoryUser_Method
+from z_User_c2_methods import GetListUser_Method
+from z_User_c2_methods import NewPass_Method
+from z_User_c2_methods import Reactivate_user_Method
+from z_User_c2_methods import ReposnseTokenError
+from z_User_c2_methods import ResetUser_Method
 from z_User_c2_methods import ResponseStandart
 from z_User_c2_methods import ResponseStandartWithMotive
-from z_User_c2_methods import Reactivate_user_Method
-from z_User_c2_methods import ResetUser_Method
-from z_User_c2_methods import AlterTypeUser_Method
-from z_User_c2_methods import GethistoryUser_Method
-from z_User_c2_methods import CreateUser_Method
-from z_User_c2_methods import NewPass_Method
+from z_User_c2_methods import ValidSession_Method
+from z_User_c2_methods import Userlogin_Method
+
+
 
 @api_view(['POST'])
 def Userlogin_View(request):
@@ -44,7 +46,7 @@ def Userlogin_View(request):
 def GetHystoryUser_View(request):
     if request.method == 'POST':
         try:
-            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
            
             sessaovalida = ValidSession_Method(sessaoUser)
             if sessaovalida:
@@ -63,7 +65,7 @@ def GetHystoryUser_View(request):
 def ListUsers_View(request):
     if request.method == 'POST':
         try:
-            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
             sessaovalida = ValidSession_Method(sessaoUser)
             if sessaovalida:
                 filtros = R_GetListUser_Interface(request.data[1])
@@ -76,7 +78,7 @@ def ListUsers_View(request):
 def DesactivateListUsers_View(request):
     if request.method == 'POST':
         try:
-            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
             sessaovalida = ValidSession_Method(sessaoUser)
             if sessaovalida:
                 filtros = R_GetListUser_Interface(request.data[1])
@@ -90,7 +92,7 @@ def EditUserType_View(request):
     response = []
     if request.method == 'POST':
         try:
-            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
             if sessaoUser.nivel == '1':
                 sessaovalida = ValidSession_Method(sessaoUser)
                 if sessaovalida:
@@ -117,7 +119,7 @@ def ResetPasswordStandart_View(request):
     response = []
     if request.method == 'POST':
         try:
-            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
             if sessaoUser.nivel == '1':
                 sessaovalida = ValidSession_Method(sessaoUser)
                 if sessaovalida:
@@ -144,7 +146,7 @@ def DeleteUser_View(request):
     response = []
     if request.method == 'POST':
         try:
-            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
             if sessaoUser.nivel == '1':
                 sessaovalida = ValidSession_Method(sessaoUser)
                 if sessaovalida:
@@ -169,7 +171,7 @@ def ReactivateUser_View(request):
     response = []
     if request.method == 'POST':
         try:
-            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
             if sessaoUser.nivel == '1':
                 sessaovalida = ValidSession_Method(sessaoUser)
                 if sessaovalida:
@@ -197,7 +199,7 @@ def NewUser_View(request):
     response = []
     if request.method == 'POST':
         try:
-            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
             sessaovalida = ValidSession_Method(sessaoUser)
             if sessaovalida:
                 response.append(ResponseStandart(True))
@@ -221,7 +223,7 @@ def NewPassword_View(request):
     response = []
     if request.method == 'POST':
         try:
-            sessaoUser = R_GetTokenfromClient(request.data[0])
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
             sessaovalida = ValidSession_Method(sessaoUser)
             if sessaovalida:
                 response.append(ResponseStandart(True))

@@ -40,6 +40,6 @@ class ChipSaidas(models.Model):
     saida_para    = models.CharField(max_length=45)
 
 class HistoryChip(models.Model):
-    chip_id       = models.IntegerField(default=0)
+    chip_id  = models.IntegerField(default=0)
     hora     = models.CharField(max_length=17)
     event    = models.CharField(max_length=100)

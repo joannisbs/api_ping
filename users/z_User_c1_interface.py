@@ -10,7 +10,7 @@ def R_Userlogin_Interface (data):
     usuario.username = data.get("username")
     return usuario
 
-def R_GetTokenfromClient(data):
+def R_GetTokenfromClient_Interface(data):
     response = TokenResponseObject()
     response.ids   = data.get('ids') 
     response.token = data.get('token')
