@@ -2,23 +2,21 @@
 from rest_framework import serializers
 
 # Imports dos Objetos:
-from z_obj_User import ( StandartResponseObject,
-                         TokenResponseObject,
-                         CreateSessionObject)
+from z_User_c0_obj import Post_UserObject
+from z_User_c0_obj import TokenResponseObject
+from z_User_c0_obj import CreateSessionObject
+from z_User_c0_obj import StandartResponseObject
 
-from z_obj_User import Post_UserObject
+# Send Modal
 
-
-# Send Interface
-
-def S_StandardResponse_Interface (sucess,motive):
+def S_StandardResponse_Modal (sucess,motive):
     response = StandartResponseObject()
     response.sucess = sucess
     response.motive = motive
     response = StandardResponse_Serializer(response)
     return response.data
 
-def S_TokenResponse_Interface (token,status,nivel,ids,user):
+def S_TokenResponse_Modal (token,status,nivel,ids,user):
     response = TokenResponseObject()
     
     response.token  = token
@@ -64,9 +62,9 @@ class User_Serializer(serializers.Serializer):
     user_tipe = serializers.CharField(max_length=1)
     user_ativo = serializers.CharField(max_length=1)  
     
-# Interfaces de Banco
+# Modals de Banco
 
-def CreateSessionInterface(tokenSession,person,time):
+def CreateSession_Modal(tokenSession,person,time):
     response = CreateSessionObject()
     response.token     = tokenSession
     response.ativo     = 1
@@ -75,7 +73,7 @@ def CreateSessionInterface(tokenSession,person,time):
     response.horaini   = time
     return response
 
-def CreateUserInterface(login,tipe):
+def CreateUser_Modal(login,tipe):
     response = Post_UserObject()
     response.user_ativo = 's'
     response.user_pass  = "dd6e5e5918e94d997c686fcebc56922f"

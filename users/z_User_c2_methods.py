@@ -1,50 +1,55 @@
 # Imports da camada de interacao com banco:
-from z3_dbGet_User import Get_SizeofListofUsers
-from z3_dbGet_User import Get_ListofUsers
-from z3_dbGet_User import Get_SessionValid
-from z3_dbGet_User import Get_UserActivesForLogin
-from z3_dbGet_User import Get_UserById
-from z3_dbGet_User import Get_ListofHistoryUsers
-from z3_dbGet_User import Get_SizeHistoryofUsers
-from z3_dbGet_User import Get_checkUserExists
+from z_User_c3_dbGet import Get_SizeofListofUsers
+from z_User_c3_dbGet import Get_ListofUsers
+from z_User_c3_dbGet import Get_SessionValid
+from z_User_c3_dbGet import Get_UserActivesForLogin
+from z_User_c3_dbGet import Get_UserById
+from z_User_c3_dbGet import Get_ListofHistoryUsers
+from z_User_c3_dbGet import Get_SizeHistoryofUsers
+from z_User_c3_dbGet import Get_checkUserExists
+from z_User_c3_dbGet import Get_UserIdbyName
 
-from z3_dbPost_User import Post_SessionDbSeri 
-from z3_dbPost_User import Post_HistoryDbSeri 
-from z3_dbPost_User import Post_UserDbSeri
+from z_User_c3_dbPost import Post_SessionDbSeri 
+from z_User_c3_dbPost import Post_HistoryDbSeri 
+from z_User_c3_dbPost import Post_UserDbSeri
 
-from z3_dbUpdt_User import Updt_SessiontoInvalid
-from z3_dbUpdt_User import Updt_DeleteUser
-from z3_dbUpdt_User import Updt_ReactivateUser
-from z3_dbUpdt_User import Updt_ResetUser
-from z3_dbUpdt_User import Updt_AlterTypeUser
-from z3_dbUpdt_User import Updt_NewPass
+from z_User_c3_dbUpdt import Updt_SessiontoInvalid
+from z_User_c3_dbUpdt import Updt_DeleteUser
+from z_User_c3_dbUpdt import Updt_ReactivateUser
+from z_User_c3_dbUpdt import Updt_ResetUser
+from z_User_c3_dbUpdt import Updt_AlterTypeUser
+from z_User_c3_dbUpdt import Updt_NewPass 
 
 # Imports de ferramentas:
-from z_frame_cript import Cripto_md5, Cripto_sha256
-from z_frame_getTime import GetTime
-from z_obj_User import Post_historyUserObject
-from z_functionsgenericas import RetornaType
+from z__frame_cript import Cripto_md5, Cripto_sha256
+from z__frame_getTime import GetTime
+from z_User_c0_obj import Post_historyUserObject
+from z__functionsgenericas import RetornaType
 
 # Imports de interface de resposta
-from z2_Rinterface_user import SizeListUser_Serializer 
-from z2_Rinterface_user import ListUsers_Serializer 
-from z2_Rinterface_user import ListHistoryUsers_Serializer 
-from z2_Rinterface_user import CreateUserInterface
-from z2_Rinterface_user import S_TokenResponse_Interface
-from z2_Rinterface_user import CreateSessionInterface
+from z_User_c2_modals import SizeListUser_Serializer 
+from z_User_c2_modals import ListUsers_Serializer 
+from z_User_c2_modals import ListHistoryUsers_Serializer 
+from z_User_c2_modals import CreateUser_Modal
+from z_User_c2_modals import S_TokenResponse_Modal
+from z_User_c2_modals import CreateSession_Modal
 
-from z2_Rinterface_user import S_StandardResponse_Interface
+from z_User_c2_modals import S_StandardResponse_Modal
 
 # Metodos de interacao com a camada de View:
 def CreateUser_Method (id_user,login,TypesOfAccont):
-    response = CreateUserInterface (login,TypesOfAccont)
+    response = CreateUser_Modal (login,TypesOfAccont)
     if Get_checkUserExists(login):
         if Post_UserDbSeri(response):
             response = Post_UserDbSeri(response)
             response.Save(response.data)
             tipo = RetornaType(TypesOfAccont) 
+            idcriado = Get_UserIdbyName(login)
+            nomedocriador = Get_UserById(id_user)
+            InsertHistoryUser (idcriado,
+                        "Criado por: " + nomedocriador + " tipo: " + tipo)
             InsertHistoryUser (id_user,
-                        "Criou o usuario " + login + " tipo: " + tipo)
+                        "Criou o usuario: " + login + " tipo: " + tipo)
             return 1
         else:
             return '5'
@@ -56,8 +61,12 @@ def AlterTypeUser_Method ( id_user, ids, types  ):
         if Updt_AlterTypeUser( int(ids), types ):
             name = Get_UserById(int(ids) )
             tipo = RetornaType(types) 
+            nomeAlterador = Get_UserById(int(id_user) )
             InsertHistoryUser (id_user,
-                        "Alterou o usuario " + name + " para o tipo: " + tipo)
+                        "Alterou o usuario: " + name + " para o tipo: " + tipo)
+
+            InsertHistoryUser (int(ids),
+                        "Alterado tipo por: " + nomeAlterador + " para: " + tipo)
             return True
         return False
     except:
@@ -67,7 +76,7 @@ def NewPass_Method ( id_user, pws):
     pwd = Cripto_md5(pws)
     try:
         if Updt_NewPass( int(id_user) , pwd ):
-            InsertHistoryUser(id_user,"Trocou a propria senha.")
+            InsertHistoryUser(id_user,"Trocou a propria senha")
             return True
         return False
     except:
@@ -78,7 +87,13 @@ def ResetUser_Method ( id_user, ids  ):
     try:
         if Updt_ResetUser( int(ids) ):
             name = Get_UserById(int(ids) )
-            InsertHistoryUser(id_user,"Resetou a senha do usuario "+ name)
+            InsertHistoryUser(id_user,"Resetou a senha do usuario: "+ name)
+
+            nomeAlterador = Get_UserById(int(id_user) )
+
+            InsertHistoryUser (int(ids),
+                        "Senha resetada por: " + nomeAlterador)
+
             return True
         return False
     except:
@@ -89,7 +104,10 @@ def Reactivate_user_Method ( id_user, ids ):
     try:
         if Updt_ReactivateUser( int(ids) ):
             name = Get_UserById(int(ids) )
-            InsertHistoryUser(id_user,"Reativou o usuario "+ name)
+            InsertHistoryUser(id_user,"Reativou o usuario: "+ name)
+            nomeAlterador = Get_UserById(int(id_user) )
+            InsertHistoryUser (int(ids),
+                        "Conta reativada por: " + nomeAlterador)
             return True
         return False
     except:
@@ -100,7 +118,10 @@ def DeleteUser_Method ( id_user, ids ):
     try:
         if Updt_DeleteUser( int(ids) ):
             name = Get_UserById(int(ids) )
-            InsertHistoryUser(id_user,"Desativou o usuario "+ name)
+            InsertHistoryUser(id_user,"Desativou o usuario: "+ name)
+            nomeAlterador = Get_UserById(int(id_user) )
+            InsertHistoryUser (int(ids),
+                        "Conta desativada por: " + nomeAlterador)
             return True
         return False
     except:
@@ -112,7 +133,7 @@ def DeleteUser_Method ( id_user, ids ):
 def GethistoryUser_Method (  ids, page,filtro ):
     response = []
     filtro = ArrumaData(filtro)
-    response.append(S_StandardResponse_Interface(True,0))
+    response.append(S_StandardResponse_Modal(True,0))
     try:
         sizeof = Get_SizeHistoryofUsers(ids, page,filtro)
         sizeof = SizeListUser_Serializer(sizeof)
@@ -121,7 +142,7 @@ def GethistoryUser_Method (  ids, page,filtro ):
         listofhistory = Get_ListofHistoryUsers(ids, page,filtro)
         
         if not listofhistory:
-            response.append(S_StandardResponse_Interface(False,5))
+            response.append(S_StandardResponse_Modal(False,5))
             return response
             
         peaple = []
@@ -130,18 +151,18 @@ def GethistoryUser_Method (  ids, page,filtro ):
             peaple.append(person.data)    
             
 
-        response.append(S_StandardResponse_Interface(True,0))
+        response.append(S_StandardResponse_Modal(True,0))
         response.append(sizeof)
         response.append(peaple)
         return response
 
     except:
-        response.append(S_StandardResponse_Interface(False,0))
+        response.append(S_StandardResponse_Modal(False,0))
         return response
 
 def GetListUser_Method ( data ,condicion):
     response = []
-    response.append(S_StandardResponse_Interface(True,0))
+    response.append(S_StandardResponse_Modal(True,0))
     try:
         sizeof = Get_SizeofListofUsers(data.page,data.filtro,condicion)
         sizeof = SizeListUser_Serializer(sizeof)
@@ -150,7 +171,7 @@ def GetListUser_Method ( data ,condicion):
         listofpersons = Get_ListofUsers(data.page,data.filtro,condicion)
 
         if not listofpersons:
-            response.append(S_StandardResponse_Interface(False,5))
+            response.append(S_StandardResponse_Modal(False,5))
             return response
 
         peaple = []
@@ -159,13 +180,13 @@ def GetListUser_Method ( data ,condicion):
             peaple.append(person.data)    
     
 
-        response.append(S_StandardResponse_Interface(True,0))
+        response.append(S_StandardResponse_Modal(True,0))
         response.append(sizeof)
         response.append(peaple)
         return response
 
     except:
-        response.append(S_StandardResponse_Interface(False,0))
+        response.append(S_StandardResponse_Modal(False,0))
         return response
 
 def ValidSession_Method ( data ):
@@ -193,9 +214,9 @@ def Userlogin_Method ( data ):
             if tokenResponse:
                 
                 response = []
-                response.append(S_StandardResponse_Interface(True,0))
+                response.append(S_StandardResponse_Modal(True,0))
                 
-                token = S_TokenResponse_Interface (tokenResponse,
+                token = S_TokenResponse_Modal (tokenResponse,
                                                     "True",
                                                     person.user_tipe,
                                                     person.id,
@@ -205,36 +226,36 @@ def Userlogin_Method ( data ):
             
             else:
                 response = []
-                response.append(S_StandardResponse_Interface(False,3))
+                response.append(S_StandardResponse_Modal(False,3))
                 return response
         else:
             response = []
-            response.append(S_StandardResponse_Interface(False,3))
+            response.append(S_StandardResponse_Modal(False,3))
             return response
     else:
         response = []
-        response.append(S_StandardResponse_Interface(False,3))
+        response.append(S_StandardResponse_Modal(False,3))
         return response
 
     response = []
-    response.append(S_StandardResponse_Interface(False,3))
+    response.append(S_StandardResponse_Modal(False,3))
     return response   
 
 def ResponseStandart(condicion):
     if condicion:
-        return S_StandardResponse_Interface(True,0)
-    return S_StandardResponse_Interface(False,3)
+        return S_StandardResponse_Modal(True,0)
+    return S_StandardResponse_Modal(False,3)
 
 def ResponseStandartWithMotive(condicion,motive):
     if condicion:
-        return S_StandardResponse_Interface(True,0)
-    return S_StandardResponse_Interface(False,motive)
+        return S_StandardResponse_Modal(True,0)
+    return S_StandardResponse_Modal(False,motive)
 
 def ReposnseTokenError():
     response = []
-    response.append(S_StandardResponse_Interface(False,3))
-    response.append(S_StandardResponse_Interface(False,3))
-    response.append(S_StandardResponse_Interface(False,3))
+    response.append(S_StandardResponse_Modal(False,3))
+    response.append(S_StandardResponse_Modal(False,3))
+    response.append(S_StandardResponse_Modal(False,3))
     return response
 
 # Metodos de interacao com outros metodos
@@ -250,7 +271,7 @@ def InitSessionofLogin(person):
         return False    
 
 def CreateSession(tokenSession,person,time):
-    sessionObject = CreateSessionInterface(tokenSession,person,time)
+    sessionObject = CreateSession_Modal(tokenSession,person,time)
     session = Post_SessionDbSeri(sessionObject)
     
     try:

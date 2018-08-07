@@ -1,7 +1,7 @@
-from z_obj_User import LoginObject
-from z_obj_User import TokenResponseObject
-from z_obj_User import GetListUserObject
-from z_obj_User import Get_ListUsersPersonObject
+from z_User_c0_obj import LoginObject
+from z_User_c0_obj import TokenResponseObject
+from z_User_c0_obj import GetListUserObject
+from z_User_c0_obj import Get_ListUsersPersonObject
 
 # Resived Inteface
 def R_Userlogin_Interface (data):

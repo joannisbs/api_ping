@@ -1,8 +1,8 @@
 #imports Relacionados ao Banco:
 from users.models import User, Sessionini
-from z_obj_User import Get_ListUsersPersonObject
-from z_obj_User import Get_ListUsersSizeObject
-from z_obj_User import Post_historyUserObject
+from z_User_c0_obj import Get_ListUsersPersonObject
+from z_User_c0_obj import Get_ListUsersSizeObject
+from z_User_c0_obj import Post_historyUserObject
 from users.models import HistoryUser
 from django.db.models import Q
 
@@ -35,11 +35,11 @@ def Get_ListofHistoryUsers(iduser,page,filter):
     response = []
 
     if filter == 'all':
-        result = (HistoryUser.objects.filter(user_ids=iduser).order_by('-hora')[initPaginacao:fimPaginacao])
+        result = (HistoryUser.objects.filter(user_ids=iduser).order_by('-id')[initPaginacao:fimPaginacao])
     else:
         result = (HistoryUser.objects.filter(Q(
             event__icontains=filter, user_ids=iduser)|
-            Q(hora__icontains=filter, user_ids=iduser)).order_by('-hora'))[initPaginacao:fimPaginacao]
+            Q(hora__icontains=filter, user_ids=iduser)).order_by('-id'))[initPaginacao:fimPaginacao]
 
 
     for item in result:
@@ -112,6 +112,11 @@ def Get_UserById(ids):
     result = User.objects.filter(id=ids)
     for item in result:
         return item.user_nome
+
+def Get_UserIdbyName(Name):
+    result = User.objects.filter(user_nome=Name)
+    for item in result:
+        return item.id
 
 def Get_ListofUsers(page,filter,condicion):
     if condicion:

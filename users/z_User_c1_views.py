@@ -6,27 +6,27 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 #import da Interface.
-from z1_interface_User import R_Userlogin_Interface
-from z1_interface_User import R_GetTokenfromClient
-from z1_interface_User import R_GetListUser_Interface
-from z1_interface_User import R_AlterTypeUser_Interface
-from z1_interface_User import R_GetListhistoryUser_Interface
-from z1_interface_User import R_NewUser_Interface
+from z_User_c1_interface import R_Userlogin_Interface
+from z_User_c1_interface import R_GetTokenfromClient
+from z_User_c1_interface import R_GetListUser_Interface
+from z_User_c1_interface import R_AlterTypeUser_Interface
+from z_User_c1_interface import R_GetListhistoryUser_Interface
+from z_User_c1_interface import R_NewUser_Interface
 
 #imports da camada de Methodos.
-from z2_methods_User import Userlogin_Method
-from z2_methods_User import ValidSession_Method
-from z2_methods_User import ReposnseTokenError
-from z2_methods_User import GetListUser_Method
-from z2_methods_User import DeleteUser_Method
-from z2_methods_User import ResponseStandart
-from z2_methods_User import ResponseStandartWithMotive
-from z2_methods_User import Reactivate_user_Method
-from z2_methods_User import ResetUser_Method
-from z2_methods_User import AlterTypeUser_Method
-from z2_methods_User import GethistoryUser_Method
-from z2_methods_User import CreateUser_Method 
-from z2_methods_User import NewPass_Method
+from z_User_c2_methods import Userlogin_Method
+from z_User_c2_methods import ValidSession_Method
+from z_User_c2_methods import ReposnseTokenError
+from z_User_c2_methods import GetListUser_Method
+from z_User_c2_methods import DeleteUser_Method
+from z_User_c2_methods import ResponseStandart
+from z_User_c2_methods import ResponseStandartWithMotive
+from z_User_c2_methods import Reactivate_user_Method
+from z_User_c2_methods import ResetUser_Method
+from z_User_c2_methods import AlterTypeUser_Method
+from z_User_c2_methods import GethistoryUser_Method
+from z_User_c2_methods import CreateUser_Method
+from z_User_c2_methods import NewPass_Method
 
 @api_view(['POST'])
 def Userlogin_View(request):
@@ -214,9 +214,6 @@ def NewUser_View(request):
         except:
             return Response (403)      
     return Response (403)
-
- 
-
 
 
 @api_view(['POST'])
