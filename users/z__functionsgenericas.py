@@ -46,4 +46,28 @@ class nivels:
         self.Prj   = False
         self.Exp   = False
         self.Sup   = False
-       
+
+def ArrumaData(data):
+    dataarrumada = data
+    if '/' in data:
+        dado = data.split('/')
+        if len(dado) == 3:
+            if len(dado[2])==1:
+                dado[2] = ''
+            if len(dado[0])==1:
+                dado[0] = '0' + dado[0]
+            if len(dado[2])==3:
+                dado[2] = ''
+            if len(dado[2])==4:
+                dado[2] = dado[2][2] + dado[2][3]
+            dataarrumada = dado[2] + "_" + dado[1] + "_" + dado [0]
+        elif len(dado) == 2:
+            if len(dado[1])==1:
+                dado[1] = ''
+            if len(dado[0])==1:
+                dado[0] = '0' + dado[0]
+            dataarrumada = dado[1] + "_" + dado [0]
+        else:
+            dataarrumada = data
+
+    return dataarrumada  

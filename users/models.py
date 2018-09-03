@@ -33,6 +33,12 @@ class Chip(models.Model):
     chip_where    = models.CharField(max_length=1, default='e')# e=estoque s=saida m=modulo
     chip_whedes   = models.IntegerField(default=0)# quem qual
 
+class EntradaChipEstoque(models.Model):
+    chip_id       = models.IntegerField(default=0)
+    chip_data     = models.CharField(max_length=17)
+    entradapor    = models.CharField(max_length=45)
+    event         = models.CharField(max_length=100)
+
 class ChipSaidas(models.Model):
     chip_id       = models.IntegerField(default=0)
     chip_data     = models.CharField(max_length=17)

@@ -25,6 +25,7 @@ from z__frame_cript import Cripto_md5, Cripto_sha256
 from z__frame_getTime import GetTime
 from z_User_c0_obj import Post_historyUserObject
 from z__functionsgenericas import RetornaType
+from z__functionsgenericas import ArrumaData
 
 # Imports de interface de resposta
 from z_User_c2_modals import SizeListUser_Serializer 
@@ -312,28 +313,5 @@ def GenerateTokenSessao(token,nivel,user):
     return token
 
         
-def ArrumaData(data):
-    dataarrumada = data
-    if '/' in data:
-        dado = data.split('/')
-        if len(dado) == 3:
-            if len(dado[2])==1:
-                dado[2] = ''
-            if len(dado[0])==1:
-                dado[0] = '0' + dado[0]
-            if len(dado[2])==3:
-                dado[2] = ''
-            if len(dado[2])==4:
-                dado[2] = dado[2][2] + dado[2][3]
-            dataarrumada = dado[2] + "_" + dado[1] + "_" + dado [0]
-        elif len(dado) == 2:
-            if len(dado[1])==1:
-                dado[1] = ''
-            if len(dado[0])==1:
-                dado[0] = '0' + dado[0]
-            dataarrumada = dado[1] + "_" + dado [0]
-        else:
-            dataarrumada = data
-
-    return dataarrumada        
+      
 

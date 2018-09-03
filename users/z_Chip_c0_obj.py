@@ -1,5 +1,12 @@
 
 
+class EstoqueChip:
+    def __init__(self):
+        self.chip_id        = ''
+        self.chip_data      = ''
+        self.entradapor     = ''
+        self.event          = ''
+
 class Post_historyChipObject:
     def __init__(self):
         self.chip_id        = ''
@@ -8,6 +15,7 @@ class Post_historyChipObject:
 
 class db_ChipObject:
     def __init__(self):
+        self.id        = ''
         self.chip_ip        = ''
         self.chip_num       = ''
         self.chip_oper      = ''
@@ -22,3 +30,10 @@ class Resp_newChipObject:
         self.motivo         = ''
         self.number         = ''
         self.ipaddr         = ''
+
+class Resp_ChipDateGenericObject:
+    def __init__(self):
+        self.one         = ''
+        self.two         = ''
+        self.three       = ''
+    

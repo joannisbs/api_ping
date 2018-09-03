@@ -22,6 +22,7 @@ urlpatterns = [
     
 
     url(r'newChip'              ,z_Chip_c1_views.NewChip_View                   ),
+    url(r'listChip'             ,z_Chip_c1_views.ListChip_View                  ),
     
     
     
