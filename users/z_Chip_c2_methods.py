@@ -16,9 +16,12 @@ from z_Chip_c3_dbGet import Get_CheckChipNumberNotExists
 from z_Chip_c3_dbGet import Get_ChipIDbychipNumber
 from z_Chip_c3_dbGet import Get_ChilListSize 
 from z_Chip_c3_dbGet import Get_ListChip 
-from z_Chip_c3_dbGet import Get_estoqueByChipID
+from z_Chip_c3_dbGet import Get_estoqueByChipID 
+from z_Chip_c3_dbGet import Get_ChipNumberbyChipId
 #from z_Chip_c3_dbGet import Get_SaidaByIp
 
+from z_Chip_c3_dbUpdt import Updt_DeleteChip 
+from z_Chip_c3_dbUpdt import Updt_ActiveChip 
 from z_Chip_c3_dbPost import Post_CreateChip
 from z_Chip_c3_dbPost import Post_ChipHistoryDbSeri 
 from z_Chip_c3_dbPost import Post_ChipToEstoque
@@ -62,7 +65,6 @@ def ListChip_Method(pagina,search,categ,active):
         sizeof = SizeListUser_Serializer(sizeof)
         sizeof = sizeof.data
         
-        
         listChip = Get_ListChip(pagina, search,categ,active)
         
         listofChipsSerializada = []
@@ -85,7 +87,26 @@ def ListChip_Method(pagina,search,categ,active):
         return S_StandardResponse_Modal(False,0)
     return 0
     
-
+def DeletChip_method(chipid,idsuser,motivo):
+    try:
+        Updt_DeleteChip(chipid)
+        name = Get_UserById(int(idsuser) )
+        number = Get_ChipNumberbyChipId(int(chipid))
+        InsertHistoryChip(chipid,"Chip deletado por " + name + ", motivo " + motivo)
+        InsertHistoryUser(idsuser,"Deletou o chip: "+ number + ", motivo " + motivo)
+        return True
+    except:
+        return False
+def ActivChip_method(chipid,idsuser,motivo):
+    try:
+        Updt_ActiveChip(chipid)
+        name = Get_UserById(int(idsuser) )
+        number = Get_ChipNumberbyChipId(int(chipid))
+        InsertHistoryChip(chipid,"Chip Reativado por " + name + ", motivo " + motivo)
+        InsertHistoryUser(idsuser,"Reativou o chip: "+ number + ", motivo " + motivo)
+        return True
+    except:
+        return False
 
 def InsertChipToEstoque(idchip,user,event):
     entradaestoque = EstoqueChip()

@@ -38,9 +38,20 @@ def Get_ChipIDbychipNumber(number):
     except:
         return False
 
+def Get_ChipNumberbyChipId(chipid):
+    try:
+        Chips =  Chip.objects.filter(id = chipid)
+        # Existe Apenas um usuario com este nome no banco. 
+        for chip in Chips:
+            return chip.chip_num
+        return False
+    except:
+        return False
+
+
 def Get_ChilListSize (pagina,search,categ,ativo):
-    fimPaginacao  = int(pagina) * 50
-    initPaginacao = fimPaginacao - 50
+    fimPaginacao  = int(pagina) * 20
+    initPaginacao = fimPaginacao - 20
 
     if categ == 'all':
         if search == 'all':
@@ -77,31 +88,31 @@ def Get_ChilListSize (pagina,search,categ,ativo):
     return response
 
 def Get_ListChip (pagina,search,categ,ativo):
-    fimPaginacao  = int(pagina) * 50
-    initPaginacao = fimPaginacao - 50
+    fimPaginacao  = int(pagina) * 20
+    initPaginacao = fimPaginacao - 20
     ToBeSearch = False
 
     if categ == 'all':
         if search == 'all':
-            resultChipSearch = (Chip.objects.filter(chip_ativo=ativo))
+            resultChipSearch = (Chip.objects.filter(chip_ativo=ativo))[initPaginacao:fimPaginacao]
                 
         else:
             resultChipSearch = (Chip.objects.filter(
                 Q( chip_data__icontains =search ,chip_ativo=ativo)|
                 Q( chip_ip__icontains   =search ,chip_ativo=ativo)|
                 Q( chip_num__icontains  =search ,chip_ativo=ativo)|
-                Q( chip_oper__icontains =search ,chip_ativo=ativo)))
+                Q( chip_oper__icontains =search ,chip_ativo=ativo)))[initPaginacao:fimPaginacao]
 
     else:
         if search == 'all':
-            resultChipSearch = (Chip.objects.filter(chip_where=categ,chip_ativo=ativo))
+            resultChipSearch = (Chip.objects.filter(chip_where=categ,chip_ativo=ativo))[initPaginacao:fimPaginacao]
                 
         else:
             resultChipSearch = (Chip.objects.filter(
                 Q(chip_where=categ, chip_data__icontains =search ,chip_ativo=ativo)|
                 Q(chip_where=categ, chip_ip__icontains   =search ,chip_ativo=ativo)|
                 Q(chip_where=categ, chip_num__icontains  =search ,chip_ativo=ativo)|
-                Q(chip_where=categ, chip_oper__icontains =search ,chip_ativo=ativo)))
+                Q(chip_where=categ, chip_oper__icontains =search ,chip_ativo=ativo)))[initPaginacao:fimPaginacao]
 
         
     response = []
