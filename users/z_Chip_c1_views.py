@@ -93,8 +93,8 @@ def listDesactivedChip_View(request):
             sessaovalida = ValidSession_Method(sessaoUser)
             if sessaovalida:
                 response.append(ResponseStandart(True))
-                #tipodeconta = RetornNiveisComparation(sessaoUser.nivel)
-                nivelValido = True
+                tipodeconta = RetornNiveisComparation(sessaoUser.nivel)
+                nivelValido = tipodeconta.Adm or tipodeconta.MeP or tipodeconta.Prj
                 if nivelValido:
                     response.append(ResponseStandart(True))
                     pagina = request.data[1].get("page")
@@ -114,7 +114,41 @@ def listDesactivedChip_View(request):
             return Response(ReposnseTokenError())
     return Response(ReposnseTokenError())
 
-    
+@api_view(['POST'])
+def EditIpChip_View(request):
+    response = []
+    if request.method == 'POST':
+        try:
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
+            sessaovalida = ValidSession_Method(sessaoUser)
+            if sessaovalida:
+                response.append(ResponseStandart(True))
+                tipodeconta = RetornNiveisComparation(sessaoUser.nivel)
+                nivelValido = tipodeconta.Adm or tipodeconta.MeP or tipodeconta.Prj
+                if nivelValido:
+                    response.append(ResponseStandart(True))
+                    chip_ip = request.data[1].get("chip_ip")
+                    chip_oper = request.data[1].get("chip_oper")
+                    chipid     = request.data[1].get("id")
+                    chip_num = request.data[1].get("chip_num") 
+                    
+                    print chip_ip 
+                    print chip_oper
+                    print chipid
+                    print chip_num
+
+                    
+                    return Response(response)
+                else:
+                    response.append(ResponseStandart(False))
+                    response.append(ResponseStandart(False))
+                    return Response(response)
+            else:
+                return Response(ReposnseTokenError())
+        except:
+            return Response(ReposnseTokenError())
+    return Response(ReposnseTokenError())
+
 @api_view(['POST'])
 def ChipDelete_View(request):
     response = []
