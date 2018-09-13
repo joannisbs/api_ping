@@ -23,6 +23,7 @@ from z_Chip_c2_methods import CreateChip_method
 from z_Chip_c2_methods import ListChip_Method
 from z_Chip_c2_methods import DeletChip_method
 from z_Chip_c2_methods import ActivChip_method 
+from z_Chip_c2_methods import EditIpChip_method 
 
 
 @api_view(['POST'])
@@ -136,8 +137,9 @@ def EditIpChip_View(request):
                     print chip_oper
                     print chipid
                     print chip_num
-
-                    
+                    suces = EditIpChip_method(chipid,chip_ip,chip_oper,sessaoUser.ids,request.data[2])
+                    response.append(ResponseStandart(suces))
+                    print suces
                     return Response(response)
                 else:
                     response.append(ResponseStandart(False))

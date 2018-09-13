@@ -22,6 +22,8 @@ from z_Chip_c3_dbGet import Get_ChipNumberbyChipId
 
 from z_Chip_c3_dbUpdt import Updt_DeleteChip 
 from z_Chip_c3_dbUpdt import Updt_ActiveChip 
+from z_Chip_c3_dbUpdt import Updt_EditIpChip 
+
 from z_Chip_c3_dbPost import Post_CreateChip
 from z_Chip_c3_dbPost import Post_ChipHistoryDbSeri 
 from z_Chip_c3_dbPost import Post_ChipToEstoque
@@ -97,6 +99,19 @@ def DeletChip_method(chipid,idsuser,motivo):
         return True
     except:
         return False
+
+def EditIpChip_method(chipid,chipip,chipoper,idsuser, motivo):
+    try:
+        Updt_EditIpChip(chipid,chipip,chipoper)
+        name = Get_UserById(int(idsuser) )
+        number = Get_ChipNumberbyChipId(int(chipid))
+        InsertHistoryChip(chipid,"Ip Alterado por " + name + ", para " + chipip + " " + motivo)
+        InsertHistoryUser(idsuser,"Alterou o ip do chip: "+ number + ",para " + chipip + " motivo " + motivo)
+        return True
+    except:
+        return False
+
+
 def ActivChip_method(chipid,idsuser,motivo):
     try:
         Updt_ActiveChip(chipid)

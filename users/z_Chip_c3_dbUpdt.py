@@ -25,3 +25,17 @@ def Updt_ActiveChip(ids):
         return True
     except:
         return False
+
+def Updt_EditIpChip(chipid,chipip,chipoper):
+    try:
+        chips =  Chip.objects.filter(id = chipid)
+
+        # Existe Apenas um usuario com este nome no banco. 
+        for chi in chips:
+    
+            chi.chip_ip = chipip
+            chi.chip_oper = chipoper
+            chi.save()
+        return True
+    except:
+        return False
