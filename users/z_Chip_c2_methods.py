@@ -3,7 +3,7 @@
 from z_User_c3_dbGet import Get_UserById
 from z_User_c2_methods import InsertHistoryUser
 from z_User_c2_methods import GetTimeDB
-from z_User_c2_modals import SizeListUser_Serializer
+from z_User_c2_modals import SizeListUser_Serializer, ListHistoryUsers_Serializer
 
 from z_Chip_c0_obj import Post_historyChipObject 
 from z_Chip_c0_obj import EstoqueChip
@@ -19,6 +19,9 @@ from z_Chip_c3_dbGet import Get_ListChip
 from z_Chip_c3_dbGet import Get_estoqueByChipID 
 from z_Chip_c3_dbGet import Get_ChipNumberbyChipId
 #from z_Chip_c3_dbGet import Get_SaidaByIp
+from z_Chip_c3_dbGet import Get_ListofHistoryofChips
+from z_Chip_c3_dbGet import Get_SizeHistoryofChips
+
 
 from z_Chip_c3_dbUpdt import Updt_DeleteChip 
 from z_Chip_c3_dbUpdt import Updt_ActiveChip 
@@ -153,5 +156,37 @@ def GetCodeOfCatg ( categoria ):
         categoria = 's'  
     return categoria
 
+def GethistoryChip_Method (  ids, page,filtro ):
+    response = []
+    
+    filtro = ArrumaData(filtro)
+   
+    response.append(S_StandardResponse_Modal(True,0))
+    try:
+
+        sizeof = Get_SizeHistoryofChips(ids, page, filtro)
+        sizeof = SizeListUser_Serializer(sizeof)
+        sizeof = sizeof.data
+      
+        listofhistory = Get_ListofHistoryofChips(ids, page,filtro)
+        
+        if not listofhistory:
+            response.append(S_StandardResponse_Modal(False,5))
+            return response
+            
+        peaple = []
+        for item in listofhistory:
+            person = ListHistoryUsers_Serializer(item)
+            peaple.append(person.data)    
+            
+
+        response.append(S_StandardResponse_Modal(True,0))
+        response.append(sizeof)
+        response.append(peaple)
+        return response
+
+    except:
+        response.append(S_StandardResponse_Modal(False,0))
+        return response
 
 

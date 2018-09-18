@@ -1,6 +1,6 @@
-from users.models import Chip, EntradaChipEstoque
+from users.models import Chip, EntradaChipEstoque, HistoryChip
 
-from z_User_c0_obj import Get_ListUsersSizeObject
+from z_User_c0_obj import Get_ListUsersSizeObject, Post_historyUserObject
 from z_Chip_c0_obj import db_ChipObject , Resp_ChipDateGenericObject
 from django.db.models import Q
 
@@ -146,3 +146,53 @@ def Get_estoqueByChipID(ChipID):
 def Get_SaidaByID(id):
     return "saida"
 
+def Get_SizeHistoryofChips(iduser, page,filtro):
+    
+    fimPaginacao  = int(page) * 50
+    initPaginacao = fimPaginacao - 50
+    
+    if filtro == 'all':
+        sizeofListofHistoryChips = len(HistoryChip.objects.filter(chip_id=iduser).order_by('-id'))
+    else:
+        sizeofListofHistoryChips = len(HistoryChip.objects.filter(Q(
+            event__icontains=filtro, chip_id=iduser)|
+            Q(hora__icontains=filtro, chip_id=iduser)).order_by('-id'))
+
+
+    toBeNext = 0
+
+    if fimPaginacao  > sizeofListofHistoryChips:
+        fimPaginacao = sizeofListofHistoryChips
+        toBeNext = 1
+    response = Get_ListUsersSizeObject()
+    response.initpag = initPaginacao
+    response.endpag  = fimPaginacao
+    response.size    = sizeofListofHistoryChips
+    response.next    = toBeNext
+    return response
+
+def Get_ListofHistoryofChips(iduser,page,filter):
+    
+    fimPaginacao  = int(page) * 50
+    initPaginacao = fimPaginacao - 50
+    ToBeSearch = False
+   
+    response = []
+
+    if filter == 'all':
+        result = (HistoryChip.objects.filter(chip_id=iduser).order_by('-id')[initPaginacao:fimPaginacao])
+    else:
+        result = (HistoryChip.objects.filter(Q(
+            event__icontains=filter, chip_id=iduser)|
+            Q(hora__icontains=filter, chip_id=iduser)).order_by('-id'))[initPaginacao:fimPaginacao]
+
+
+    for item in result:
+        ToBeSearch = True
+        history      = Post_historyUserObject()
+        history.event = item.event
+        history.hora = item.hora
+        response.append(history)
+    if ToBeSearch:
+        return response
+    return False

@@ -22,11 +22,12 @@ urlpatterns = [
     
 
     url(r'newChip'              ,z_Chip_c1_views.NewChip_View                   ),
-    url(r'listDesactivedChip'    ,z_Chip_c1_views.listDesactivedChip_View       ) ,
+    url(r'listDesactivedChip'   ,z_Chip_c1_views.listDesactivedChip_View        ) ,
     url(r'listChip'             ,z_Chip_c1_views.ListChip_View                  ),
-    url(r'ChipDelete'             ,z_Chip_c1_views.ChipDelete_View              ),
-    url(r'ChipActive'             ,z_Chip_c1_views.ChipActive_View              ),
-    url(r'ChipEditIp'             ,z_Chip_c1_views.EditIpChip_View              ),
+    url(r'ChipDelete'           ,z_Chip_c1_views.ChipDelete_View                ),
+    url(r'ChipActive'           ,z_Chip_c1_views.ChipActive_View                ),
+    url(r'ChipEditIp'           ,z_Chip_c1_views.EditIpChip_View                ),
+    url(r'ChipListHistory'      ,z_Chip_c1_views.GetHystoryChip_View            ),
     
     
     

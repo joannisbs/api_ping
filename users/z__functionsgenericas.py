@@ -49,6 +49,7 @@ class nivels:
 
 def ArrumaData(data):
     dataarrumada = data
+  
     if '/' in data:
         dado = data.split('/')
         if len(dado) == 3:
@@ -69,5 +70,5 @@ def ArrumaData(data):
             dataarrumada = dado[1] + "_" + dado [0]
         else:
             dataarrumada = data
-
+  
     return dataarrumada  

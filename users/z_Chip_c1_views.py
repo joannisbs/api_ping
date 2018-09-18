@@ -24,6 +24,7 @@ from z_Chip_c2_methods import ListChip_Method
 from z_Chip_c2_methods import DeletChip_method
 from z_Chip_c2_methods import ActivChip_method 
 from z_Chip_c2_methods import EditIpChip_method 
+from z_Chip_c2_methods import GethistoryChip_Method 
 
 
 @api_view(['POST'])
@@ -133,13 +134,10 @@ def EditIpChip_View(request):
                     chipid     = request.data[1].get("id")
                     chip_num = request.data[1].get("chip_num") 
                     
-                    print chip_ip 
-                    print chip_oper
-                    print chipid
-                    print chip_num
+                   
                     suces = EditIpChip_method(chipid,chip_ip,chip_oper,sessaoUser.ids,request.data[2])
                     response.append(ResponseStandart(suces))
-                    print suces
+                   
                     return Response(response)
                 else:
                     response.append(ResponseStandart(False))
@@ -207,5 +205,41 @@ def ChipActive_View(request):
 
                
             return Response(ReposnseTokenError())
+        except:
+            return Response (403)
+
+@api_view(['POST'])
+def GetHystoryChip_View(request):
+    response = []
+    if request.method == 'POST':
+        try:
+            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
+            sessaovalida = ValidSession_Method(sessaoUser)
+            if sessaovalida:
+                response.append(ResponseStandart(True))
+                tipodeconta = RetornNiveisComparation(sessaoUser.nivel)
+                nivelValido = tipodeconta.Adm or tipodeconta.MeP or tipodeconta.Prj
+                if nivelValido:
+                    response.append(ResponseStandart(True))
+                    tipodeconta = RetornNiveisComparation(sessaoUser.nivel)
+                    nivelValido = tipodeconta.Adm or tipodeconta.MeP or tipodeconta.Prj
+
+                    if nivelValido:
+
+                        chipid = request.data[1].get("ids")
+                        pagina = request.data[1].get("page")
+                        search = request.data[1].get("search")
+
+                        response.append(GethistoryChip_Method(chipid,pagina,search))
+                        return Response(response)
+                    else:
+                        response.append(ResponseStandart(False))
+                        return Response(response)
+                else:
+                    response.append(ResponseStandart(False))
+                    return Response(response)
+            else:
+                return Response(ReposnseTokenError())
+               
         except:
             return Response (403)
