@@ -30,62 +30,86 @@ from z_User_c2_methods import Userlogin_Method
 
 
 
-@api_view(['POST'])
-def Userlogin_View(request):
+@api_view ([ 'POST' ])
+def Userlogin_View ( request ):
     if request.method == 'POST':
         try:
-            TentativaLogin = R_Userlogin_Interface(request.data)
-            return Response (Userlogin_Method (TentativaLogin))
+            TentativaLogin = R_Userlogin_Interface ( request.data )
+            return Response  ( Userlogin_Method ( TentativaLogin ))
+
         except:
-            return Response (404)
+            return Response ( 404 )
+    
     else:
-        return Response (403)
+        return Response ( 403 )
+
+    return Response ( 403 )
 
 
-@api_view(['POST'])
-def GetHystoryUser_View(request):
+
+
+@api_view ([ 'POST' ])
+def GetHystoryUser_View ( request ):
     if request.method == 'POST':
-        try:
-            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
-           
-            sessaovalida = ValidSession_Method(sessaoUser)
-            if sessaovalida:
-                filtros = R_GetListhistoryUser_Interface(request.data[1])
-                return Response(GethistoryUser_Method(filtros.ids,filtros.page,filtros.filtro))
-
-            else:
-                return Response(ReposnseTokenError())
         
+        try:
+            sessaoUser   = R_GetTokenfromClient_Interface ( request.data[0] )
+            sessaovalida = ValidSession_Method ( sessaoUser )
+            
+            if sessaovalida:
+                filtros  = R_GetListhistoryUser_Interface ( request.data[1] )
+                resp     = GethistoryUser_Method ( filtros.ids, filtros.page, filtros.filtro )
+                return Response ( resp )
+            
+            else:
+                return Response( ReposnseTokenError() )
                
         except:
-            return Response (403)
+            return Response ( 403 )
+    return Response (403)
+
+ 
 
 
-@api_view(['POST'])
-def ListUsers_View(request):
+@api_view ([ 'POST' ])
+def ListUsers_View ( request ):
     if request.method == 'POST':
+
         try:
-            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
-            sessaovalida = ValidSession_Method(sessaoUser)
+            sessaoUser   = R_GetTokenfromClient_Interface ( request.data[0] )
+            sessaovalida = ValidSession_Method ( sessaoUser )
+
             if sessaovalida:
-                filtros = R_GetListUser_Interface(request.data[1])
-                return Response(GetListUser_Method(filtros,True))
+                filtros = R_GetListUser_Interface    ( request.data[1] )
+                return Response ( GetListUser_Method ( filtros, True  ))
+
             return Response(ReposnseTokenError())
+
         except:
             return Response (403)
 
-@api_view(['POST'])
-def DesactivateListUsers_View(request):
+
+
+
+@api_view ([ 'POST' ])
+def DesactivateListUsers_View ( request ):
     if request.method == 'POST':
+
         try:
-            sessaoUser = R_GetTokenfromClient_Interface(request.data[0])
-            sessaovalida = ValidSession_Method(sessaoUser)
+            sessaoUser   = R_GetTokenfromClient_Interface ( request.data[0] ) 
+            sessaovalida = ValidSession_Method ( sessaoUser )
+
             if sessaovalida:
-                filtros = R_GetListUser_Interface(request.data[1])
-                return Response(GetListUser_Method(filtros,False))
-            return Response(ReposnseTokenError())
+                filtros  = R_GetListUser_Interface   ( request.data[1] )
+                return Response ( GetListUser_Method ( filtros, False ))
+
+            return Response ( ReposnseTokenError() )
+            
         except:
             return Response (403)
+
+
+
 
 @api_view(['POST'])
 def EditUserType_View(request):
