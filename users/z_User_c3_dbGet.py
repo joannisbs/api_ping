@@ -8,7 +8,7 @@ from django.db.models import Q
 
 def Get_UserActivesForLogin(userName):
     try:
-        peaple =   (User.objects.filter(user_nome=userName,user_ativo='s')|
+        peaple = (User.objects.filter(user_nome=userName,user_ativo='s')|
                     User.objects.filter(user_nome=userName,user_ativo='A'))
         # Existe Apenas um usuario com este nome no banco. 
         for person in peaple:
