@@ -6,8 +6,8 @@ from z_User_c0_obj import Get_ListUsersPersonObject
 # Resived Inteface
 def R_Userlogin_Interface (data):
     usuario = LoginObject()
-    usuario.password = data.get("password")
-    usuario.username = data.get("username")
+    usuario.password = data.get('password')
+    usuario.username = data.get('username')
     return usuario
 
 def R_GetTokenfromClient_Interface(data):

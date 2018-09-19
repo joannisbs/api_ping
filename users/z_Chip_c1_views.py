@@ -217,12 +217,12 @@ def GetHystoryChip_View(request):
             sessaovalida = ValidSession_Method(sessaoUser)
             if sessaovalida:
                 response.append(ResponseStandart(True))
-                tipodeconta = RetornNiveisComparation(sessaoUser.nivel)
-                nivelValido = tipodeconta.Adm or tipodeconta.MeP or tipodeconta.Prj
+                #tipodeconta = RetornNiveisComparation(sessaoUser.nivel)
+                nivelValido = True
                 if nivelValido:
                     response.append(ResponseStandart(True))
-                    tipodeconta = RetornNiveisComparation(sessaoUser.nivel)
-                    nivelValido = tipodeconta.Adm or tipodeconta.MeP or tipodeconta.Prj
+                    #tipodeconta = RetornNiveisComparation(sessaoUser.nivel)
+                    nivelValido = True
 
                     if nivelValido:
 
