@@ -69,7 +69,10 @@ class Empresas(models.Model):
     end_rua         = models.CharField      ( max_length=60 )
     end_uf          = models.CharField      ( max_length=2  )
 
+    cont_On         = models.CharField      ( max_length=3  )   
+    cont_Tot        = models.CharField      ( max_length=3  )      
+
 class HistoryEmpresas(models.Model):
-    chip_id         = models.IntegerField   ( default=0     )
+    ids             = models.IntegerField   ( default=0     )
     hora            = models.CharField      ( max_length=17 )
     event           = models.CharField      ( max_length=100)
