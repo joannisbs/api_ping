@@ -4,6 +4,7 @@ from django.contrib import admin
 #import views
 from users import z_User_c1_views
 from users import z_Chip_c1_views
+from users import z_Emp_c1_views
 
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
@@ -31,7 +32,7 @@ urlpatterns = [
     
     
     
-
+    url(r'NewCompany'           ,z_Emp_c1_views.NewEmp_View                     ),
     
     
 ]
