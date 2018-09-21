@@ -86,6 +86,12 @@ DATABASES = {
         'USER': 'ping_api',
         'PASSWORD': 'Realponto102030#%',
         'HOST': '192.168.0.192', 
+        'OPTIONS': {
+            'charset': 'utf8',
+            'init_command': 'SET '
+                'character_set_connection=utf8,'
+                'collation_connection=utf8_bin'
+        }
     }
 }
 
