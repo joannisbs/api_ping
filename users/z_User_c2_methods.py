@@ -288,7 +288,7 @@ def InsertHistoryUser(user,hystory):
     histo.hora = time
     histo.event = hystory
     histo = Post_HistoryDbSeri(histo)
-    histo.Save(histo.data)
+    return histo.Save(histo.data)
 
     #Post_HistoryDbSeri
 # Metodos Secundarios
