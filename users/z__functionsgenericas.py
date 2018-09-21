@@ -72,3 +72,9 @@ def ArrumaData(data):
             dataarrumada = data
   
     return dataarrumada  
+
+class Post_historyObject:
+    def __init__(self):
+        self.ids            = ''
+        self.hora           = ''
+        self.event          = ''
