@@ -14,3 +14,11 @@ Dict_respostas_Session = {
     'acessoNegado':      3,
     'erroDesconhecido':  4
 }
+
+Dict_respostas_List = {
+    'inicializado':      0,
+    'sucesso':           1,
+    'erroSize':          2,
+    'erroList':          3,
+    'listavazia':        4
+}
