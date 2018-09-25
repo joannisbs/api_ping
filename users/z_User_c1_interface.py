@@ -1,6 +1,6 @@
 from z_User_c0_obj import LoginObject
 from z_User_c0_obj import TokenResponseObject
-from z_User_c0_obj import GetListUserObject
+from z_User_c0_obj import Get_ListSizeObject
 from z_User_c0_obj import Get_ListUsersPersonObject
 
 # Resived Inteface
@@ -19,13 +19,13 @@ def R_GetTokenfromClient_Interface(data):
     return response
 
 def R_GetListUser_Interface( data ):
-    response = GetListUserObject()
+    response = Get_ListSizeObject()
     response.page   = data.get('page') 
     response.filtro = data.get('filtro')
     return response
 
 def R_GetListhistoryUser_Interface( data ):
-    response = GetListUserObject()
+    response = Get_ListSizeObject()
     response.page   = data.get('page') 
     response.filtro = data.get('filtro')
     response.ids    = data.get('ids')
