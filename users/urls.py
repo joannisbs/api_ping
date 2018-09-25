@@ -33,6 +33,7 @@ urlpatterns = [
     
     
     url(r'NewCompany'           ,z_Emp_c1_views.NewEmp_View                     ),
+    url(r'ListActivedCompany'   ,z_Emp_c1_views.ListEmpActive_View              ),
     
     
 ]
