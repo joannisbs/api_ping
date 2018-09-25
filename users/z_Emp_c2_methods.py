@@ -14,26 +14,70 @@ from z_Emp_c3_dbPost import Post_Empresas_DbSeri
 from z_Emp_c3_dbPost import Post_History_EmpreDbSeri
 
 from z_Emp_c3_dbGet import Get_CheckIfEmpNameNotExists
+from z_Emp_c3_dbGet import Get_EmpListSize
+from z_Emp_c3_dbGet import Get_ListofEmpss
+
+from z_Emp_c2_modals import Empresa_Serializer
+
+from z__Dicts import Dict_respostas_List
+
+def ListCompany_Method ( dado, ativo ):
+    search = dado.get ( 'search' )
+    pagina = dado.get ( 'pagina' )
+
+    response              = []
+    listofEmpsSerializada = []
+    listEmp               = False
+    sucessoGetList        = 'inicializado'
+
+    try: 
+        sizeof = Get_EmpListSize ( pagina, search, ativo )
+        sizeof = SizeListUser_Serializer(sizeof)
+        sizeof = sizeof.data
+        sucessoGetList = 'sucesso'
+
+    except:
+        sucessoGetList = 'erroSize'
+    
+    try:
+        listEmp = Get_ListofEmpss ( pagina, search, ativo )
+        if not listEmp:
+            sucessoGetList = 'listavazia'
+            listEmp = []
+    except:
+        sucessoGetList = 'erroList'
+        listEmp = []
+        print "FALHA LISTY"
+    
+ 
+    for item in listEmp:
+        Emp     = Empresa_Serializer ( item )
+        listofEmpsSerializada.append ( Emp.data )
+
+    response.append ( Dict_respostas_List [ sucessoGetList ] )
+    response.append ( listofEmpsSerializada )   
+    
+    return response
 
 
 def NewCompany_Method(dado,iduser):
     emp                 = NewEmp_Object()
 
-    emp.emp_nome        = str ( dado.get ( 'emp_nome'      ) )
-    emp.empdata_cnpj    = str ( dado.get ( 'empdata_cnpj'  ) )
-    emp.empdata_email   = str ( dado.get ( 'empdata_email' ) )
-    emp.empdata_razao   = str ( dado.get ( 'empdata_razao' ) )
-    emp.empdata_resp    = str ( dado.get ( 'empdata_resp'  ) )
-    emp.empdata_tel     = str ( dado.get ( 'empdata_tel'   ) )
+    emp.emp_nome        =  dado.get ( 'emp_nome'      )
+    emp.empdata_cnpj    =  dado.get ( 'empdata_cnpj'  )
+    emp.empdata_email   =  dado.get ( 'empdata_email' )
+    emp.empdata_razao   =  dado.get ( 'empdata_razao' )
+    emp.empdata_resp    =  dado.get ( 'empdata_resp'  )
+    emp.empdata_tel     =  dado.get ( 'empdata_tel'   )
 
-    emp.end_bairro      = str ( dado.get ( 'end_bairro'    ) )
-    emp.end_cep         = str ( dado.get ( 'end_cep'       ) )
-    emp.end_cidade      = str ( dado.get ( 'end_cidade'    ) )
-    emp.end_comp        = str ( dado.get ( 'end_comp'      ) )
-    emp.end_num         = str ( dado.get ( 'end_num'       ) )
-    emp.end_ref         = str ( dado.get ( 'end_ref'       ) )
-    emp.end_rua         = str ( dado.get ( 'end_rua'       ) )
-    emp.end_uf          = str ( dado.get ( 'end_uf'        ) )
+    emp.end_bairro      =  dado.get ( 'end_bairro'    )
+    emp.end_cep         =  dado.get ( 'end_cep'       )
+    emp.end_cidade      =  dado.get ( 'end_cidade'    )
+    emp.end_comp        =  dado.get ( 'end_comp'      )
+    emp.end_num         =  dado.get ( 'end_num'       )
+    emp.end_ref         =  dado.get ( 'end_ref'       )
+    emp.end_rua         =  dado.get ( 'end_rua'       )
+    emp.end_uf          =  dado.get ( 'end_uf'        )
     
     exist = Get_CheckIfEmpNameNotExists( dado.get ( 'emp_nome' ) )
 
@@ -56,7 +100,8 @@ def NewCompany_Method(dado,iduser):
         return 'ja_existe'
 
 
-def InsertHistoryEmp(Empid,hystory):
+
+def InsertHistoryEmp ( Empid, hystory ):
     histo = Post_historyObject()
     time = GetTimeDB()
     histo.ids = int(Empid)
