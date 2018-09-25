@@ -1,7 +1,7 @@
 #imports Relacionados ao Banco:
 from users.models import User, Sessionini
 from z_User_c0_obj import Get_ListUsersPersonObject
-from z_User_c0_obj import Get_ListUsersSizeObject
+from z_User_c0_obj import Get_ListSizeRspObject
 from z_User_c0_obj import Post_historyUserObject
 from users.models import HistoryUser
 from django.db.models import Q
@@ -71,7 +71,7 @@ def Get_SizeHistoryofUsers (iduser,page,filter):
     if fimPaginacao  > sizeofListofHistoryUsers:
         fimPaginacao = sizeofListofHistoryUsers
         toBeNext = 1
-    response = Get_ListUsersSizeObject()
+    response = Get_ListSizeRspObject()
     response.initpag = initPaginacao
     response.endpag  = fimPaginacao
     response.size    = sizeofListofHistoryUsers
@@ -101,7 +101,7 @@ def Get_SizeofListofUsers(page,filter,condicion):
     if fimPaginacao>sizeofListofUsers:
         fimPaginacao=sizeofListofUsers
         toBeNext = 1
-    response = Get_ListUsersSizeObject()
+    response = Get_ListSizeRspObject()
     response.initpag = initPaginacao
     response.endpag  = fimPaginacao
     response.size    = sizeofListofUsers
