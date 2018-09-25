@@ -24,7 +24,7 @@ class CreateSessionObject:
         self.user_ids    = ''
         self.horaini     = ''
 
-class GetListUserObject:
+class Get_ListSizeObject:
     def __init__(self):
         self.page        = ''
         self.filtro      = ''
@@ -36,7 +36,7 @@ class Get_ListUsersPersonObject:
         self.user        = ''
         self.type        = ''
 
-class Get_ListUsersSizeObject:
+class Get_ListSizeRspObject:
     def __init__(self):
         self.initpag     = ''
         self.endpag      = ''
