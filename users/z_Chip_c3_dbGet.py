@@ -1,6 +1,6 @@
 from users.models import Chip, EntradaChipEstoque, HistoryChip
 
-from z_User_c0_obj import Get_ListUsersSizeObject, Post_historyUserObject
+from z_User_c0_obj import Get_ListSizeRspObject, Post_historyUserObject
 from z_Chip_c0_obj import db_ChipObject , Resp_ChipDateGenericObject
 from django.db.models import Q
 
@@ -80,7 +80,7 @@ def Get_ChilListSize (pagina,search,categ,ativo):
     if fimPaginacao  > sizeofListofChips:
         fimPaginacao = sizeofListofChips
         toBeNext = 1
-    response = Get_ListUsersSizeObject()
+    response = Get_ListSizeRspObject()
     response.initpag = initPaginacao
     response.endpag  = fimPaginacao
     response.size    = sizeofListofChips
@@ -164,7 +164,7 @@ def Get_SizeHistoryofChips(iduser, page,filtro):
     if fimPaginacao  > sizeofListofHistoryChips:
         fimPaginacao = sizeofListofHistoryChips
         toBeNext = 1
-    response = Get_ListUsersSizeObject()
+    response = Get_ListSizeRspObject()
     response.initpag = initPaginacao
     response.endpag  = fimPaginacao
     response.size    = sizeofListofHistoryChips
