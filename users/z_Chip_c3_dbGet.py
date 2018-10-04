@@ -50,8 +50,8 @@ def Get_ChipNumberbyChipId(chipid):
 
 
 def Get_ChilListSize (pagina,search,categ,ativo):
-    fimPaginacao  = int(pagina) * 20
-    initPaginacao = fimPaginacao - 20
+    fimPaginacao  = int(pagina) * 25
+    initPaginacao = fimPaginacao - 25
 
     if categ == 'all':
         if search == 'all':
@@ -88,8 +88,8 @@ def Get_ChilListSize (pagina,search,categ,ativo):
     return response
 
 def Get_ListChip (pagina,search,categ,ativo):
-    fimPaginacao  = int(pagina) * 20
-    initPaginacao = fimPaginacao - 20
+    fimPaginacao  = int(pagina) * 25
+    initPaginacao = fimPaginacao - 25
     ToBeSearch = False
 
     if categ == 'all':
