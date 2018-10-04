@@ -4,7 +4,8 @@ Dict_respostas_Post = {
     'ja_existe':         2,
     'falhahistoryUsr':   3,
     'falhahistory':      3,
-    'falha':             4     
+    'falha':             4,
+    'nao_existe':        2   
 }
 
 Dict_respostas_Session = {
