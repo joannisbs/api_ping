@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 
 class Empresa_Serializer ( serializers.Serializer ):
+    id              = serializers.IntegerField   ( default    = 0  )
     emp_nome        = serializers.CharField      ( max_length = 12 )
     empdata_cnpj    = serializers.CharField      ( max_length = 18 )
     empdata_email   = serializers.CharField      ( max_length = 60 )
