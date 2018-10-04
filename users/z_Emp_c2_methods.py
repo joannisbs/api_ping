@@ -15,11 +15,16 @@ from z_Emp_c3_dbPost import Post_History_EmpreDbSeri
 
 from z_Emp_c3_dbGet import Get_CheckIfEmpNameNotExists
 from z_Emp_c3_dbGet import Get_EmpListSize
-from z_Emp_c3_dbGet import Get_ListofEmpss
+from z_Emp_c3_dbGet import Get_ListofEmpss 
+from z_Emp_c3_dbGet import Get_EmprById 
+
+from z_Emp_c3_dbUpdt import Updt_DeleteEmp
+from z_Emp_c3_dbUpdt import Updt_ActiveEmp
 
 from z_Emp_c2_modals import Empresa_Serializer
 
 from z__Dicts import Dict_respostas_List
+
 
 def ListCompany_Method ( dado, ativo ):
     search = dado.get ( 'search' )
@@ -55,9 +60,64 @@ def ListCompany_Method ( dado, ativo ):
         listofEmpsSerializada.append ( Emp.data )
 
     response.append ( Dict_respostas_List [ sucessoGetList ] )
+    response.append ( sizeof )
     response.append ( listofEmpsSerializada )   
     
     return response
+
+def DeleteCompany_Method ( dado, iduser ):
+    empresa             =  dado.get ( 'id')
+    motivo              =  dado.get ( 'motivo')
+    
+    sucess = Updt_DeleteEmp ( empresa )
+
+    if sucess:
+        
+        usuario    = Get_UserById ( iduser  )
+        name_empr  = Get_EmprById ( empresa )
+
+        if not name_empr:
+            return 'falha'
+
+        print usuario
+        print name_empr
+
+        hsucess  = InsertHistoryEmp   ( empresa, 'Excluida por '     + usuario   + ' ' + motivo )
+        husucess = InsertHistoryUser  ( iduser , 'Exluiu a empresa ' + name_empr + ' ' + motivo )
+        
+        if hsucess and husucess:      
+            return 'sucesso'
+        
+                
+        return 'falhahistory'
+    return 'falha'
+
+def ActiveCompany_Method ( dado, iduser ):
+    empresa             =  dado.get ( 'id')
+    motivo              =  dado.get ( 'motivo')
+    
+    sucess = Updt_ActiveEmp ( empresa )
+
+    if sucess:
+        
+        usuario    = Get_UserById ( iduser  )
+        name_empr  = Get_EmprById ( empresa )
+
+        if not name_empr:
+            return 'falha'
+
+        print usuario
+        print name_empr
+
+        hsucess  = InsertHistoryEmp   ( empresa, 'Reativada por '      + usuario   + ' ' + motivo )
+        husucess = InsertHistoryUser  ( iduser , 'Reativou a empresa ' + name_empr + ' ' + motivo )
+        
+        if hsucess and husucess:      
+            return 'sucesso'
+        
+                
+        return 'falhahistory'
+    return 'falha'
 
 
 def NewCompany_Method(dado,iduser):
