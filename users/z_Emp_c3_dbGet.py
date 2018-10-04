@@ -2,7 +2,7 @@ from users.models import Empresas
 from django.db.models import Q
 from z_User_c0_obj import Get_ListSizeRspObject
 
-from z_Emp_c0_obj import NewEmp_Object
+from z_Emp_c0_obj import Emp_Object
 
 def Get_CheckIfEmpNameNotExists(name):
     try:
@@ -15,7 +15,16 @@ def Get_CheckIfEmpNameNotExists(name):
     except:
         return False
 
-
+def Get_EmprById ( ids ):
+    try:
+        empresas =  Empresas.objects.filter(id = ids)
+        # Existe Apenas um usuario com este nome no banco. 
+        for empresa in empresas:
+            return empresa.emp_nome
+        return False
+    except:
+        return False
+         
 def Get_EmpListSize ( pagina, search, ativo ):
     fimPaginacao  = int(pagina) * 20
     initPaginacao = fimPaginacao - 20
@@ -93,7 +102,7 @@ def Get_ListofEmpss ( pagina, search, ativo ):
 
     for item in sizeofListofEmps:
         ToBeSearch = True
-        empresa   = NewEmp_Object()
+        empresa   = Emp_Object()
         empresa   = item
         # empresa.empdata_cnpj    = esa.empdata_cnpj
         # empresa.empdata_email   = esa.empdata_email
@@ -103,6 +112,7 @@ def Get_ListofEmpss ( pagina, search, ativo ):
         # empresa
         # empresa
         # empresa
+        
 
         response.append(empresa)
 
