@@ -97,8 +97,8 @@ def DeletChip_method(chipid,idsuser,motivo):
         Updt_DeleteChip(chipid)
         name = Get_UserById(int(idsuser) )
         number = Get_ChipNumberbyChipId(int(chipid))
-        InsertHistoryChip(chipid,"Chip deletado por " + name + ", motivo " + motivo)
-        InsertHistoryUser(idsuser,"Deletou o chip: "+ number + ", motivo " + motivo)
+        InsertHistoryChip(chipid,"Chip deletado por: " + name + ", motivo: " + motivo)
+        InsertHistoryUser(idsuser,"Deletou o chip: "+ number + ", motivo: " + motivo)
         return True
     except:
         return False
@@ -108,8 +108,8 @@ def EditIpChip_method(chipid,chipip,chipoper,idsuser, motivo):
         Updt_EditIpChip(chipid,chipip,chipoper)
         name = Get_UserById(int(idsuser) )
         number = Get_ChipNumberbyChipId(int(chipid))
-        InsertHistoryChip(chipid,"Ip Alterado por " + name + ", para " + chipip + " " + motivo)
-        InsertHistoryUser(idsuser,"Alterou o ip do chip: "+ number + ",para " + chipip + " motivo " + motivo)
+        InsertHistoryChip(chipid,"Ip Alterado por: " + name + ", para: " + chipip + " motivo: " + motivo)
+        InsertHistoryUser(idsuser,"Alterou o ip do chip: "+ number + ",para: " + chipip + " motivo: " + motivo)
         return True
     except:
         return False
@@ -120,8 +120,8 @@ def ActivChip_method(chipid,idsuser,motivo):
         Updt_ActiveChip(chipid)
         name = Get_UserById(int(idsuser) )
         number = Get_ChipNumberbyChipId(int(chipid))
-        InsertHistoryChip(chipid,"Chip Reativado por " + name + ", motivo " + motivo)
-        InsertHistoryUser(idsuser,"Reativou o chip: "+ number + ", motivo " + motivo)
+        InsertHistoryChip(chipid,"Chip Reativado por: " + name + ", motivo: " + motivo)
+        InsertHistoryUser(idsuser,"Reativou o chip: "+ number + ", motivo: " + motivo)
         return True
     except:
         return False
