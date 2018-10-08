@@ -82,8 +82,8 @@ def DeleteCompany_Method ( dado, iduser ):
         print usuario
         print name_empr
 
-        hsucess  = InsertHistoryEmp   ( empresa, 'Excluida por '     + usuario   + ' ' + motivo )
-        husucess = InsertHistoryUser  ( iduser , 'Exluiu a empresa ' + name_empr + ' ' + motivo )
+        hsucess  = InsertHistoryEmp   ( empresa, 'Excluida por '     + usuario   + ' motivo: ' + motivo )
+        husucess = InsertHistoryUser  ( iduser , 'Exluiu a empresa ' + name_empr + ' motivo: ' + motivo )
         
         if hsucess and husucess:      
             return 'sucesso'
