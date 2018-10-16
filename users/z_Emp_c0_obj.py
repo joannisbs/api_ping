@@ -40,3 +40,11 @@ class Emp_Object:
 
         self.cont_On         = '0'
         self.cont_Tot        = '0'
+
+class HistoryGenericObject:
+    def __init__(self):
+        self.ids            = ''
+        self.hora           = ''
+        self.event          = ''
+
+   

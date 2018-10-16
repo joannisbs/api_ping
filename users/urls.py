@@ -33,8 +33,10 @@ urlpatterns = [
     
     
     url(r'NewCompany'           ,z_Emp_c1_views.NewEmp_View                     ),
+    url(r'EditCompany'          ,z_Emp_c1_views.EditEmp_View                    ),
     url(r'ListDesactivedCompany',z_Emp_c1_views.ListEmpDesactive_View           ),
     url(r'ListActivedCompany'   ,z_Emp_c1_views.ListEmpActive_View              ),
+    url(r'ListHistoryCompany'   ,z_Emp_c1_views.ListHistoryEmp_View             ), 
     url(r'ToDesactiveCompany'   ,z_Emp_c1_views.ToDesactive_View                ),    
-    url(r'ToReactiveCompany'    ,z_Emp_c1_views.ToReactive_View                ), 
+    url(r'ToReactiveCompany'    ,z_Emp_c1_views.ToReactive_View                 ), 
 ]

@@ -1,3 +1,4 @@
+# enccoding: utf-8
 from rest_framework import serializers
 from users.models import Empresas
 from users.models import HistoryEmpresas
@@ -25,12 +26,11 @@ class Post_Empresas_DbSeri ( serializers.Serializer ):
     cont_Tot        = serializers.CharField     ( max_length=3  )
 
     def Save ( self, data ):
-        try:
-            emp = Empresas.objects.create ( **data )
-            return emp.id
+        
+        emp = Empresas.objects.create ( **data )
+        return emp.id
 
-        except:
-            return False
+       
 
 class Post_History_EmpreDbSeri ( serializers.Serializer ):
     ids             = serializers.IntegerField  ( default=0     )
@@ -39,7 +39,7 @@ class Post_History_EmpreDbSeri ( serializers.Serializer ):
 
     def Save ( self, data ):
         try:
-            HistoryEmpresas.objects.create ( **data )
+            HistoryEmpresas.objects.create ( **data)
             return True
 
         except:

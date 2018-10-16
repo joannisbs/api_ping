@@ -1,3 +1,4 @@
+
 from rest_framework import serializers
 
 
@@ -22,3 +23,8 @@ class Empresa_Serializer ( serializers.Serializer ):
     cont_On         = serializers.CharField      ( max_length = 3  )   
     cont_Tot        = serializers.CharField      ( max_length = 3  )   
     emp_ativo       = serializers.BooleanField   ( default =  True )  
+
+class History_Serializer (serializers.Serializer) :
+    ids             = serializers.IntegerField   ( default = 0     )
+    hora            = serializers.CharField      ( max_length = 17 )
+    event           = serializers.CharField      ( max_length = 100)

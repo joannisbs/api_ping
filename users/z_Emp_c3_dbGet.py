@@ -1,8 +1,8 @@
-from users.models import Empresas
+from users.models import Empresas, HistoryEmpresas
 from django.db.models import Q
 from z_User_c0_obj import Get_ListSizeRspObject
 
-from z_Emp_c0_obj import Emp_Object
+from z_Emp_c0_obj import Emp_Object , HistoryGenericObject
 
 def Get_CheckIfEmpNameNotExists(name):
     try:
@@ -113,6 +113,69 @@ def Get_ListofEmpss ( pagina, search, ativo ):
         # empresa
         # empresa
         
+
+        response.append(empresa)
+
+    if ToBeSearch:
+        return response
+    return False
+
+def Get_EmpHistoryListSize ( pagina, search, empres ):
+    fimPaginacao  = int(pagina) * 20
+    initPaginacao = fimPaginacao - 20
+
+    if search == 'all':
+        sizeofListofEmps = len( HistoryEmpresas.objects.filter(
+             ids = empres  ))
+            
+    else:
+        sizeofListofEmps = len( HistoryEmpresas.objects.filter(
+            Q( hora__icontains       = search  , ids = empres )|
+
+            Q( event__icontains   = search , ids = empres )))
+
+    toBeNext = 0
+
+    if fimPaginacao  > sizeofListofEmps:
+        fimPaginacao = sizeofListofEmps
+        toBeNext     = 1
+
+    response         = Get_ListSizeRspObject()
+    response.initpag = initPaginacao
+    response.endpag  = fimPaginacao
+    response.size    = sizeofListofEmps
+    response.next    = toBeNext
+    
+    
+    return response
+
+
+def Get_HistoryListofEmpss ( pagina, search, empres ):
+
+    ToBeSearch = False
+
+    response = []
+    
+    fimPaginacao  = int(pagina) * 20
+    initPaginacao = fimPaginacao - 20
+
+    if search == 'all':
+        sizeofListofEmps = ( HistoryEmpresas.objects.filter( ids = empres  )
+                              .order_by("-id")[initPaginacao:fimPaginacao])
+            
+    else:
+        sizeofListofEmps = ( HistoryEmpresas.objects.filter(            
+            
+            Q( hora__icontains       = search , ids = empres  )|
+
+            Q( event__icontains   = search , ids = empres ))
+            .order_by("-id")[initPaginacao:fimPaginacao])
+
+    for item in sizeofListofEmps:
+        ToBeSearch = True
+        empresa   = HistoryGenericObject()
+        empresa   = item
+       
 
         response.append(empresa)
 
