@@ -1,17 +1,17 @@
-
+# -*- coding: utf-8 -*-
 def RetornaType (index):
     tipo = str(index)
     response = 'erro'
     if tipo == '1':
         response = "Administrador"      
     elif tipo =='2':
-        response = "Modulo e Projetos"
+        response = u"Módulo e Projetos"
     elif tipo =='3':
-        response = "Modulo"
+        response = u"Módulo"
     elif tipo =='4':
         response = "Projetos"
     elif tipo =='5':
-        response = "Expedicao"
+        response = u"Expedição"
     elif tipo =='6':
         response = " erro "
     elif tipo =='7':

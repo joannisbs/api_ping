@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Imports da camada de interacao com banco:
 from z_User_c3_dbGet import Get_SizeofListofUsers
 from z_User_c3_dbGet import Get_ListofUsers
@@ -48,9 +49,9 @@ def CreateUser_Method (id_user,login,TypesOfAccont):
             idcriado = Get_UserIdbyName(login)
             nomedocriador = Get_UserById(id_user)
             InsertHistoryUser (idcriado,
-                        "Criado por: " + nomedocriador + " tipo: " + tipo)
+                        "Criado por: " + nomedocriador + " | Tipo: " + unicode(tipo))
             InsertHistoryUser (id_user,
-                        "Criou o usuario: " + login + " tipo: " + tipo)
+                        u"Criou o usuário: " + login + " | Tipo: " + unicode(tipo))
             return 1
         else:
             return '5'
@@ -64,10 +65,10 @@ def AlterTypeUser_Method ( id_user, ids, types  ):
             tipo = RetornaType(types) 
             nomeAlterador = Get_UserById(int(id_user) )
             InsertHistoryUser (id_user,
-                        "Alterou o usuario: " + name + " para o tipo: " + tipo)
+                        u"Alterou o usuário: " + name + " | Tipo: " + tipo)
 
             InsertHistoryUser (int(ids),
-                        "Alterado tipo por: " + nomeAlterador + " para: " + tipo)
+                        "Alterado por: " + nomeAlterador + " | Tipo: " + tipo)
             return True
         return False
     except:
@@ -77,7 +78,7 @@ def NewPass_Method ( id_user, pws):
     pwd = Cripto_md5(pws)
     try:
         if Updt_NewPass( int(id_user) , pwd ):
-            InsertHistoryUser(id_user,"Trocou a propria senha")
+            InsertHistoryUser(id_user,u"Trocou a própria senha")
             return True
         return False
     except:
@@ -88,7 +89,7 @@ def ResetUser_Method ( id_user, ids  ):
     try:
         if Updt_ResetUser( int(ids) ):
             name = Get_UserById(int(ids) )
-            InsertHistoryUser(id_user,"Resetou a senha do usuario: "+ name)
+            InsertHistoryUser(id_user,u"Resetou a senha do usuário: "+ name)
 
             nomeAlterador = Get_UserById(int(id_user) )
 
@@ -105,7 +106,7 @@ def Reactivate_user_Method ( id_user, ids ):
     try:
         if Updt_ReactivateUser( int(ids) ):
             name = Get_UserById(int(ids) )
-            InsertHistoryUser(id_user,"Reativou o usuario: "+ name)
+            InsertHistoryUser(id_user,u"Reativou o usuário: "+ name)
             nomeAlterador = Get_UserById(int(id_user) )
             InsertHistoryUser (int(ids),
                         "Conta reativada por: " + nomeAlterador)
@@ -119,7 +120,7 @@ def DeleteUser_Method ( id_user, ids ):
     try:
         if Updt_DeleteUser( int(ids) ):
             name = Get_UserById(int(ids) )
-            InsertHistoryUser(id_user,"Desativou o usuario: "+ name)
+            InsertHistoryUser(id_user,u"Desativou o usuário: "+ name)
             nomeAlterador = Get_UserById(int(id_user) )
             InsertHistoryUser (int(ids),
                         "Conta desativada por: " + nomeAlterador)
@@ -286,7 +287,7 @@ def InsertHistoryUser(user,hystory):
     time = GetTimeDB()
     histo.user_ids = user
     histo.hora = time
-    histo.event = hystory
+    histo.event = unicode(hystory)
     histo = Post_HistoryDbSeri(histo)
     return histo.Save(histo.data)
 
